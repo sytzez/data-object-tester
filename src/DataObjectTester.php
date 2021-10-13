@@ -8,24 +8,27 @@ use PHPUnit\Framework\TestCase;
 use Sytzez\DataObjectTester\Contracts\Strategies\CaseGeneratorStrategy;
 use Sytzez\DataObjectTester\DataObjects\ClassDescription;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
+use Sytzez\DataObjectTester\Strategies\CaseGenerators\MinimalCaseGenerator;
 
 final class DataObjectTester
 {
+    private CaseGeneratorStrategy $caseGenerator;
+
     public function __construct(
         private ClassDescription $dataClassDescription,
-        private CaseGeneratorStrategy $caseGenerator,
+        ?CaseGeneratorStrategy $caseGenerator = null,
     ) {
+        if ($caseGenerator) {
+            $this->caseGenerator = $caseGenerator;
+        } else {
+            $this->caseGenerator = new MinimalCaseGenerator();
+        }
     }
 
     public function test(): void
     {
         $this->testGettersExist();
-
-        $objectCases = $this->caseGenerator->generate($this->dataClassDescription);
-
-        foreach ($objectCases as $objectCase) {
-            $this->testObjectCase($objectCase);
-        }
+        $this->testObjectCases();
     }
 
     private function testGettersExist(): void
@@ -41,6 +44,15 @@ final class DataObjectTester
                 method_exists($fqn, $methodName),
                 "Method $fqn::$methodName() does not exist"
             );
+        }
+    }
+
+    private function testObjectCases(): void
+    {
+        $objectCases = $this->caseGenerator->generate($this->dataClassDescription);
+
+        foreach ($objectCases as $objectCase) {
+            $this->testObjectCase($objectCase);
         }
     }
 
