@@ -62,17 +62,7 @@ final class DataObjectTester
     {
         $fqn = $this->dataClassDescription->getFqn();
 
-        $arguments = $objectCase->getConstructorArguments();
-
-        try {
-            $object = new $fqn(...$arguments);
-        } catch (Exception $e) {
-            $message = $e->getMessage();
-            TestCase::fail("Exception caught while instantiating $fqn: '$message'");
-        } catch (Error $e) {
-            $message = $e->getMessage();
-            TestCase::fail("Error caught while instantiating $fqn: '$message'");
-        }
+        $object = $this->instantiateObject($objectCase);
 
         foreach ($objectCase->getPropertyCases() as $propertyCase) {
             $getterName = $propertyCase->getDescription()->getGetterName();
@@ -82,6 +72,23 @@ final class DataObjectTester
                 $object->{$getterName}(),
                 "$fqn::$getterName() returned an unexpected value",
             );
+        }
+    }
+
+    private function instantiateObject(ObjectCase $objectCase): object
+    {
+        $fqn = $this->dataClassDescription->getFqn();
+
+        $arguments = $objectCase->getConstructorArguments();
+
+        try {
+            return new $fqn(...$arguments);
+        } catch (Exception $e) {
+            $message = $e->getMessage();
+            TestCase::fail("Exception caught while instantiating $fqn: '$message'");
+        } catch (Error $e) {
+            $message = $e->getMessage();
+            TestCase::fail("Error caught while instantiating $fqn: '$message'");
         }
     }
 }
