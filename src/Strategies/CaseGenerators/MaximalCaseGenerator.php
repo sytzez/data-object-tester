@@ -29,7 +29,7 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
         $this->numOfCases = 0;
         $this->classDescription = $classDescription;
 
-        return $this->generateObjectCases(
+        return $this->generatePossibilities(
             [],
             $classDescription->getPropertyDescriptions(),
         );
@@ -38,9 +38,9 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
     /**
      * @param array<PropertyCase> $existingPropertyCases
      * @param array<PropertyDescription> $propertyDescriptions
-     * @return array
+     * @return array<ObjectCase>
      */
-    public function generateObjectCases(array $existingPropertyCases, array $propertyDescriptions): array
+    public function generatePossibilities(array $existingPropertyCases, array $propertyDescriptions): array
     {
         if ($this->numOfCases >= $this->maxCases) {
             return [];
@@ -62,7 +62,7 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
         foreach ($currentProperty->getValidCases() as $case) {
             array_push(
                 $objectCases,
-                ...$this->generateObjectCases(
+                ...$this->generatePossibilities(
                     [...$existingPropertyCases, $case],
                     $remainingProperties
                 )
