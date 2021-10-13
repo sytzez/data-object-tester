@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester;
 
+use Error;
+use Exception;
 use PHPUnit\Framework\TestCase;
 use Sytzez\DataObjectTester\Contracts\Strategies\CaseGeneratorStrategy;
 use Sytzez\DataObjectTester\DataObjects\ClassDescription;
@@ -58,11 +60,19 @@ final class DataObjectTester
 
     private function testObjectCase(ObjectCase $objectCase): void
     {
-        $fqn =  $this->dataClassDescription->getFqn();
+        $fqn = $this->dataClassDescription->getFqn();
 
         $arguments = $objectCase->getConstructorArguments();
 
-        $object = new $fqn(...$arguments);
+        try {
+            $object = new $fqn(...$arguments);
+        } catch (Exception $e) {
+            $message = $e->getMessage();
+            TestCase::fail("Exception caught while instantiating $fqn: '$message'");
+        } catch (Error $e) {
+            $message = $e->getMessage();
+            TestCase::fail("Error caught while instantiating $fqn: '$message'");
+        }
 
         foreach ($objectCase->getPropertyCases() as $propertyCase) {
             $getterName = $propertyCase->getDescription()->getGetterName();
