@@ -1,5 +1,6 @@
 {
     "name": "sytzez/data-object-tester",
+    "keywords": ["testing", "phpunit"],
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -8,5 +9,12 @@
             "email": "sytzez@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "php": ">=8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sytzez\\DataObjectTester\\": "src"
+        }
+    }
 }
