@@ -1,0 +1,12 @@
+{
+    "name": "sytzez/data-object-tester",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "sytzez",
+            "email": "sytzez@gmail.com"
+        }
+    ],
+    "require": {}
+}
