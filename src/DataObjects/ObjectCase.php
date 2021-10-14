@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sytzez\DataObjectTester\DataObjects;
 
 use InvalidArgumentException;
+use Sytzez\DataObjectTester\Factories\ObjectCaseFactory;
 
 final class ObjectCase
 {
@@ -59,5 +60,15 @@ final class ObjectCase
                 throw new InvalidArgumentException("Property '$propertyCase->getName()' has no provided case");
             }
         }
+    }
+
+    /**
+     * @param ClassDescription $classDescription
+     * @param array<string, mixed> $values
+     * @return ObjectCase
+     */
+    public static function create(ClassDescription $classDescription, array $values): ObjectCase
+    {
+        return ObjectCaseFactory::create($classDescription, $values);
     }
 }

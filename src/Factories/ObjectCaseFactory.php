@@ -18,11 +18,22 @@ final class ObjectCaseFactory
     {
     }
 
+    /**
+     * @param ClassDescription $classDescription
+     * @param array<string, mixed> $values
+     * @return ObjectCase
+     */
     public static function create(ClassDescription $classDescription, array $values): ObjectCase
     {
         $builder = new ObjectCaseBuilder($classDescription);
 
         foreach ($values as $getterName => $value) {
+            if (! is_string($getterName)) {
+                throw new InvalidArgumentException(
+                    sprintf('Getter name must be a string, %s given', gettype($getterName)),
+                );
+            }
+
             $propertyDescription = self::getPropertyByGetterName($classDescription, $getterName);
 
             $inputOutputPair = $value instanceof InputOutputPair

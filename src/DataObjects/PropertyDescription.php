@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\DataObjects;
 
+use Sytzez\DataObjectTester\Factories\PropertyDescriptionFactory;
+
 final class PropertyDescription
 {
     /**
@@ -34,5 +36,15 @@ final class PropertyDescription
         foreach ($this->getInputOutputPairs() as $inputOutputPair) {
             yield new PropertyCase($this, $inputOutputPair);
         }
+    }
+
+    /**
+     * @param string $getterName
+     * @param array<mixed> $values
+     * @return PropertyDescription
+     */
+    public static function create(string $getterName, array $values): PropertyDescription
+    {
+        return PropertyDescriptionFactory::create($getterName, $values);
     }
 }
