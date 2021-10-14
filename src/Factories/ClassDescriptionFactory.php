@@ -17,28 +17,28 @@ final class ClassDescriptionFactory
 
     /**
      * @param string $fqn
-     * @param array<string, array<array<mixed>> $description
+     * @param array<string, array<mixed> $description
      * @return ClassDescription
      */
     public static function create(string $fqn, iterable $description): ClassDescription
     {
         $builder = new ClassDescriptionBuilder($fqn);
 
-        foreach ($description as $getterName => $inputOutputPairs) {
+        foreach ($description as $getterName => $values) {
             if (! is_string($getterName)) {
                 throw new InvalidArgumentException(
                     sprintf('Getter name must be a string, %s given', gettype($getterName)),
                 );
             }
 
-            if (! is_array($inputOutputPairs)) {
+            if (! is_array($values)) {
                 throw new InvalidArgumentException(
-                    sprintf("Getter values for '$getterName'' must be an iterable, %s given", gettype($inputOutputPairs)),
+                    sprintf("Getter values for '$getterName'' must be an iterable, %s given", gettype($values)),
                 );
             }
 
             $builder->addPropertyDescription(
-                PropertyDescriptionFactory::create($getterName, $inputOutputPairs)
+                PropertyDescriptionFactory::create($getterName, $values)
             );
         }
 
