@@ -6,10 +6,14 @@ namespace Sytzez\DataObjectTester\DataObjects;
 
 final class PropertyDescription
 {
+    /**
+     * @param string $getterName
+     * @param iterable<InputOutputPair> $inputOutputPairs
+     */
     public function __construct(
         private string $getterName,
-        private iterable $validValues,
-    ) {
+        private iterable $inputOutputPairs,
+    ) { // TODO: canBeOmitted, defaultValue
     }
 
     public function getGetterName(): string
@@ -17,18 +21,18 @@ final class PropertyDescription
         return $this->getterName;
     }
 
-    public function getValidValues(): iterable
+    public function getInputOutputPairs(): iterable
     {
-        return $this->validValues;
+        return $this->inputOutputPairs;
     }
 
     /**
      * @return iterable<PropertyCase>
      */
-    public function getValidCases(): iterable
+    public function getCases(): iterable
     {
-        foreach ($this->getValidValues() as $validValue) {
-            yield new PropertyCase($this, $validValue);
+        foreach ($this->getInputOutputPairs() as $inputOutputPair) {
+            yield new PropertyCase($this, $inputOutputPair);
         }
     }
 }

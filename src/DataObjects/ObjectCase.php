@@ -16,7 +16,7 @@ final class ObjectCase
         private ClassDescription $classDescription,
         private iterable $propertyCases,
     ) {
-        $this->validate();
+        $this->validateCompleteness();
     }
 
     public function getClassDescription(): ClassDescription
@@ -37,7 +37,7 @@ final class ObjectCase
         foreach($this->classDescription->getPropertyDescriptions() as $propertyDescription) {
             $propertyCase = $this->findCaseByDescription($propertyDescription);
 
-            yield $propertyCase->getValue();
+            yield $propertyCase->getInput();
         }
     }
 
@@ -50,7 +50,7 @@ final class ObjectCase
         }
     }
 
-    private function validate(): void
+    private function validateCompleteness(): void
     {
         foreach($this->classDescription->getPropertyDescriptions() as $propertyDescription) {
             $propertyCase = $this->findCaseByDescription($propertyDescription);

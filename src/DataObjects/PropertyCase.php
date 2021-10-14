@@ -8,7 +8,7 @@ final class PropertyCase
 {
     public function __construct(
         private PropertyDescription $description,
-        private $value,
+        private InputOutputPair $inputOutputPair,
     ) {
     }
 
@@ -17,8 +17,13 @@ final class PropertyCase
         return $this->description;
     }
 
-    public function getValue()
+    public function getInput()
     {
-        return $this->value;
+        return $this->inputOutputPair->getInput();
+    }
+
+    public function getExpectedOutput()
+    {
+        return $this->inputOutputPair->getExpectedOutput();
     }
 }

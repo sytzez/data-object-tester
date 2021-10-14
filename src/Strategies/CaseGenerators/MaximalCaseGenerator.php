@@ -59,11 +59,11 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
 
         $objectCases = [];
 
-        foreach ($currentProperty->getValidCases() as $case) {
+        foreach ($currentProperty->getCases() as $propertyCase) {
             array_push(
                 $objectCases,
                 ...$this->generatePossibilities(
-                    [...$existingPropertyCases, $case],
+                    [...$existingPropertyCases, $propertyCase],
                     $remainingProperties
                 )
             );

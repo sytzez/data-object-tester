@@ -68,7 +68,7 @@ final class DataObjectTester
             $getterName = $propertyCase->getDescription()->getGetterName();
 
             TestCase::assertEquals(
-                $propertyCase->getValue(),
+                $propertyCase->getExpectedOutput(),
                 $object->{$getterName}(),
                 "$fqn::$getterName() returned an unexpected value",
             );
