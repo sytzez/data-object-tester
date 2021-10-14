@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\Tests\Strategies\CaseGenerators;
 
-use Sytzez\DataObjectTester\Builders\ObjectCaseBuilder;
-use Sytzez\DataObjectTester\Factories\ClassDescriptionFactory;
-use Sytzez\DataObjectTester\Factories\ObjectCaseFactory;
+use Sytzez\DataObjectTester\DataObjects\ClassDescription;
+use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\Strategies\CaseGenerators\MaximalCaseGenerator;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
 use Sytzez\DataObjectTester\Tests\TestHelpers\EmptyClass;
@@ -18,7 +17,7 @@ class MaximalCaseGeneratorTest extends CaseGeneratorTestCase
      */
     public function it_generates_one_empty_case_if_the_object_has_no_properties(): void
     {
-        $classDescription = ClassDescriptionFactory::create(EmptyClass::class, []);
+        $classDescription = ClassDescription::create(EmptyClass::class, []);
 
         $generator = new MaximalCaseGenerator();
 
@@ -34,7 +33,7 @@ class MaximalCaseGeneratorTest extends CaseGeneratorTestCase
      */
     public function it_creates_all_possible_combinations_of_properties(): void
     {
-        $classDescription = ClassDescriptionFactory::create(DataClass::class, [
+        $classDescription = ClassDescription::create(DataClass::class, [
             'getString' => ['a', 'b', 'c'],
             'getInt'    => [1, -1],
             'getArray'  => [[]],
@@ -47,7 +46,7 @@ class MaximalCaseGeneratorTest extends CaseGeneratorTestCase
         static::assertCount(3 * 2 * 1, $cases);
 
         static::assertContainsObjectCase(
-            ObjectCaseFactory::create($classDescription, [
+            ObjectCase::create($classDescription, [
                 'getString' => 'a',
                 'getInt'    => 1,
                 'getArray'  => [],
@@ -56,7 +55,7 @@ class MaximalCaseGeneratorTest extends CaseGeneratorTestCase
         );
 
         static::assertContainsObjectCase(
-            ObjectCaseFactory::create($classDescription, [
+            ObjectCase::create($classDescription, [
                 'getString' => 'b',
                 'getInt'    => -1,
                 'getArray'  => [],
@@ -65,7 +64,7 @@ class MaximalCaseGeneratorTest extends CaseGeneratorTestCase
         );
 
         static::assertContainsObjectCase(
-            ObjectCaseFactory::create($classDescription, [
+            ObjectCase::create($classDescription, [
                 'getString' => 'c',
                 'getInt'    => 1,
                 'getArray'  => [],
@@ -79,7 +78,7 @@ class MaximalCaseGeneratorTest extends CaseGeneratorTestCase
      */
     public function it_can_limit_the_amount_of_generated_cases(): void
     {
-        $classDescription = ClassDescriptionFactory::create(DataClass::class, [
+        $classDescription = ClassDescription::create(DataClass::class, [
             'getString' => ['a', 'b', 'c'],
             'getInt'    => [1, -1],
             'getArray'  => [[]],
