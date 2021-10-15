@@ -44,4 +44,14 @@ abstract class CaseGeneratorTestCase extends TestCase
 
         return true;
     }
+
+    protected static function iteratorToArray(iterable $iterable): array {
+        $array = [];
+
+        foreach ($iterable as $iterated) {
+            $array[] = $iterated;
+        }
+
+        return $array;
+    }
 }

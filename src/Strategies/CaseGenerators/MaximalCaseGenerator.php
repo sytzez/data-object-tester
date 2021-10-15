@@ -29,7 +29,7 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
         $this->numOfCases = 0;
         $this->classDescription = $classDescription;
 
-        return $this->generatePossibilities(
+        yield from $this->generatePossibilities(
             [],
             $classDescription->getPropertyDescriptions(),
         );
@@ -38,37 +38,30 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
     /**
      * @param array<PropertyCase> $existingPropertyCases
      * @param array<PropertyDescription> $propertyDescriptions
-     * @return array<ObjectCase>
+     * @return iterable<ObjectCase>
      */
-    public function generatePossibilities(array $existingPropertyCases, array $propertyDescriptions): array
+    public function generatePossibilities(array $existingPropertyCases, array $propertyDescriptions): iterable
     {
         if ($this->numOfCases >= $this->maxCases) {
-            return [];
+            return;
         }
 
         if (count($propertyDescriptions) === 0) {
             $this->numOfCases++;
 
-            return [
-                new ObjectCase($this->classDescription, $existingPropertyCases),
-            ];
+            yield new ObjectCase($this->classDescription, $existingPropertyCases);
+
+            return;
         }
 
         $currentProperty = $propertyDescriptions[0];
         $remainingProperties = array_slice($propertyDescriptions, 1);
 
-        $objectCases = [];
-
         foreach ($currentProperty->getCases() as $propertyCase) {
-            array_push(
-                $objectCases,
-                ...$this->generatePossibilities(
-                    [...$existingPropertyCases, $propertyCase],
-                    $remainingProperties
-                )
+            yield from $this->generatePossibilities(
+                [...$existingPropertyCases, $propertyCase],
+                $remainingProperties
             );
         }
-
-        return $objectCases;
     }
 }
