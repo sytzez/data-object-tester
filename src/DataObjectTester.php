@@ -67,9 +67,19 @@ final class DataObjectTester
         foreach ($objectCase->getPropertyCases() as $propertyCase) {
             $getterName = $propertyCase->getDescription()->getGetterName();
 
+            try {
+                $output = $object->{$getterName}();
+            } catch (Exception $e) {
+                $message = $e->getMessage();
+                TestCase::fail("Exception caught while calling $fqn::$getterName(): '$message'");
+            } catch (Error $e) {
+                $message = $e->getMessage();
+                TestCase::fail("Error caught while instantiating $fqn::$getterName(): '$message'");
+            }
+
             TestCase::assertEquals(
                 $propertyCase->getExpectedOutput(),
-                $object->{$getterName}(),
+                $output,
                 "$fqn::$getterName() returned an unexpected value",
             );
         }
