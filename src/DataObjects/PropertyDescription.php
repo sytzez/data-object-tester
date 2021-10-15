@@ -10,11 +10,11 @@ final class PropertyDescription
 {
     /**
      * @param string $getterName
-     * @param iterable<InputOutputPair> $inputOutputPairs
+     * @param array<InputOutputPair> $inputOutputPairs
      */
     public function __construct(
         private string $getterName,
-        private iterable $inputOutputPairs,
+        private array $inputOutputPairs,
     ) { // TODO: canBeOmitted, defaultValue
     }
 
@@ -23,19 +23,20 @@ final class PropertyDescription
         return $this->getterName;
     }
 
-    public function getInputOutputPairs(): iterable
+    public function getInputOutputPairs(): array
     {
         return $this->inputOutputPairs;
     }
 
     /**
-     * @return iterable<PropertyCase>
+     * @return array<PropertyCase>
      */
-    public function getCases(): iterable
+    public function getCases(): array
     {
-        foreach ($this->getInputOutputPairs() as $inputOutputPair) {
-            yield new PropertyCase($this, $inputOutputPair);
-        }
+        return array_map(
+            fn (InputOutputPair $pair): PropertyCase => new PropertyCase($this, $pair),
+            $this->getInputOutputPairs()
+        );
     }
 
     /**
