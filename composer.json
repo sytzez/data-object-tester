@@ -1,6 +1,6 @@
 {
     "name": "sytzez/data-object-tester",
-    "keywords": ["testing", "phpunit"],
+    "keywords": ["testing", "phpunit", "immutable", "dto"],
     "type": "library",
     "license": "MIT",
     "authors": [
