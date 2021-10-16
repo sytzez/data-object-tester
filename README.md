@@ -85,7 +85,9 @@ use Sytzez\DataObjectTester\Generators\MaximalCaseGenerator
 
 $this->testDataObjects(
     ClassExpectation::create(DataClass::class, [
-        // ...
+        'getString' => ['hello', 'world'],
+        'getInt'    => [0, -1, PHP_INT_MAX],
+        'getArray'  => [['a', 'b', 'c'], [1, 2, 3]],
     ]),
     new MaximalCaseGenerator()
 );
