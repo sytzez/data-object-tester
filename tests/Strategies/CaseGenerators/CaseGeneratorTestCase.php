@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\Tests\Strategies\CaseGenerators;
 
+use Generator;
 use PHPUnit\Framework\TestCase;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 
@@ -45,11 +46,11 @@ abstract class CaseGeneratorTestCase extends TestCase
         return true;
     }
 
-    protected static function iteratorToArray(iterable $iterable): array {
+    protected static function generatorToArray(Generator $generator): array {
         $array = [];
 
-        foreach ($iterable as $iterated) {
-            $array[] = $iterated;
+        foreach ($generator as $generated) {
+            $array[] = $generated;
         }
 
         return $array;

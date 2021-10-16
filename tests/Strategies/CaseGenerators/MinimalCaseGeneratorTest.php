@@ -21,7 +21,7 @@ class MinimalCaseGeneratorTest extends CaseGeneratorTestCase
 
         $generator = new MinimalCaseGenerator();
 
-        $cases = static::iteratorToArray($generator->generate($classDescription));
+        $cases = static::generatorToArray($generator->generate($classDescription));
 
         static::assertCount(0, $cases);
     }
@@ -39,10 +39,10 @@ class MinimalCaseGeneratorTest extends CaseGeneratorTestCase
 
         $generator = new MinimalCaseGenerator();
 
-        $cases = static::iteratorToArray($generator->generate($classDescription));
+        $cases = static::generatorToArray($generator->generate($classDescription));
 
         static::assertCount(3, $cases);
-        
+
         static::assertContainsObjectCase(
             ObjectCase::create($classDescription, [
                 'getString' => 'a',

@@ -21,7 +21,7 @@ class MaximalCaseGeneratorTest extends CaseGeneratorTestCase
 
         $generator = new MaximalCaseGenerator();
 
-        $cases = static::iteratorToArray($generator->generate($classDescription));
+        $cases = static::generatorToArray($generator->generate($classDescription));
 
         static::assertCount(1, $cases);
         static::assertEquals($classDescription, $cases[0]->getClassDescription());
@@ -41,7 +41,7 @@ class MaximalCaseGeneratorTest extends CaseGeneratorTestCase
 
         $generator = new MaximalCaseGenerator();
 
-        $cases = static::iteratorToArray($generator->generate($classDescription));
+        $cases = static::generatorToArray($generator->generate($classDescription));
 
         static::assertCount(3 * 2 * 1, $cases);
 
@@ -86,7 +86,7 @@ class MaximalCaseGeneratorTest extends CaseGeneratorTestCase
 
         $generator = new MaximalCaseGenerator(3);
 
-        $cases = static::iteratorToArray($generator->generate($classDescription));
+        $cases = static::generatorToArray($generator->generate($classDescription));
 
         static::assertCount(3, $cases);
 

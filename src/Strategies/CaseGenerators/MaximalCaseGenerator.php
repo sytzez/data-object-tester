@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\Strategies\CaseGenerators;
 
+use Generator;
 use Sytzez\DataObjectTester\Contracts\Strategies\CaseGeneratorStrategy;
 use Sytzez\DataObjectTester\DataObjects\ClassDescription;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
@@ -22,9 +23,9 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
 
     /**
      * @param ClassDescription $classDescription
-     * @return iterable<ObjectCase>
+     * @return Generator<ObjectCase>
      */
-    public function generate(ClassDescription $classDescription): iterable
+    public function generate(ClassDescription $classDescription): Generator
     {
         $this->numOfCases = 0;
         $this->classDescription = $classDescription;
@@ -33,6 +34,8 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
             [],
             $classDescription->getPropertyDescriptions(),
         );
+
+        return $this->numOfCases;
     }
 
     /**
@@ -40,7 +43,7 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
      * @param array<PropertyDescription> $propertyDescriptions
      * @return iterable<ObjectCase>
      */
-    public function generatePossibilities(array $existingPropertyCases, array $propertyDescriptions): iterable
+    private function generatePossibilities(array $existingPropertyCases, array $propertyDescriptions): iterable
     {
         if ($this->numOfCases >= $this->maxCases) {
             return;

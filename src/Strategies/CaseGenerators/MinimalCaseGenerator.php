@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\Strategies\CaseGenerators;
 
+use Generator;
 use Sytzez\DataObjectTester\Builders\ObjectCaseBuilder;
 use Sytzez\DataObjectTester\Contracts\Strategies\CaseGeneratorStrategy;
 use Sytzez\DataObjectTester\DataObjects\ClassDescription;
@@ -16,9 +17,9 @@ final class MinimalCaseGenerator implements CaseGeneratorStrategy
 
     /**
      * @param ClassDescription $classDescription
-     * @return iterable<ObjectCase>
+     * @return Generator<ObjectCase>
      */
-    public function generate(ClassDescription $classDescription): iterable
+    public function generate(ClassDescription $classDescription): Generator
     {
         $this->classDescription = $classDescription;
 
@@ -27,6 +28,8 @@ final class MinimalCaseGenerator implements CaseGeneratorStrategy
         for ($i = 0; $i < $maxCases; $i++) {
             yield $this->buildCase($i);
         }
+
+        return $maxCases;
     }
 
     private function buildCase(int $offset): ObjectCase
