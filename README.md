@@ -42,7 +42,7 @@ final class DataClass
 }
 ```
 
-To make sure the getter methods always return the given values, all you need to do it write a test that extends the DataObjectTestCase:
+To make sure the getter methods always return the given values, all you need to do is write a test that extends the DataObjectTestCase:
 
 ```php
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation
