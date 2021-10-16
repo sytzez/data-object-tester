@@ -10,16 +10,11 @@ use Sytzez\DataObjectTester\DataObjects\ClassDescription;
 
 abstract class DataObjectTestCase extends TestCase
 {
-    protected ClassDescription $dataClassDescription;
-
-    protected function setDataClassDescription(string $fqn, array $description): void
-    {
-        $this->dataClassDescription = ClassDescription::create($fqn, $description);
-    }
-
-    protected function testDataObjects(?CaseGeneratorStrategy $caseGenerator = null): void
-    {
-        $tester = new DataObjectTester($this, $this->dataClassDescription, $caseGenerator);
+    protected function testDataObjects(
+        ClassDescription $classDescription,
+        ?CaseGeneratorStrategy $caseGenerator = null,
+    ): void {
+        $tester = new DataObjectTester($this, $classDescription, $caseGenerator);
 
         $tester->test();
     }
