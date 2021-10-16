@@ -24,7 +24,9 @@ final class DataObjectTester
         if ($caseGenerator) {
             $this->caseGenerator = $caseGenerator;
         } else {
+            // @codeCoverageIgnoreStart
             $this->caseGenerator = new MinimalCaseGenerator();
+            // @codeCoverageIgnoreEnd
         }
     }
 
@@ -75,7 +77,7 @@ final class DataObjectTester
                 $this->assert::fail("Exception caught while calling $fqn::$getterName(): '$message'");
             } catch (Error $e) {
                 $message = $e->getMessage();
-                $this->assert::fail("Error caught while instantiating $fqn::$getterName(): '$message'");
+                $this->assert::fail("Error caught while calling $fqn::$getterName(): '$message'");
             }
 
             $this->assert::assertEquals(

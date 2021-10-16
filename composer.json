@@ -22,5 +22,8 @@
         "psr-4": {
             "Sytzez\\DataObjectTester\\Tests\\": "tests"
         }
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.4"
     }
 }
