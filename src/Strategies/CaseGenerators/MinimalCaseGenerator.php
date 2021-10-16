@@ -7,21 +7,21 @@ namespace Sytzez\DataObjectTester\Strategies\CaseGenerators;
 use Generator;
 use Sytzez\DataObjectTester\Builders\ObjectCaseBuilder;
 use Sytzez\DataObjectTester\Contracts\Strategies\CaseGeneratorStrategy;
-use Sytzez\DataObjectTester\DataObjects\ClassDescription;
+use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
-use Sytzez\DataObjectTester\DataObjects\PropertyDescription;
+use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
 
 final class MinimalCaseGenerator implements CaseGeneratorStrategy
 {
-    private ClassDescription $classDescription;
+    private ClassExpectation $classExpectation;
 
     /**
-     * @param ClassDescription $classDescription
+     * @param ClassExpectation $classExpectation
      * @return Generator<ObjectCase>
      */
-    public function generate(ClassDescription $classDescription): Generator
+    public function generate(ClassExpectation $classExpectation): Generator
     {
-        $this->classDescription = $classDescription;
+        $this->classExpectation = $classExpectation;
 
         $maxCases = $this->getMaxCases();
 
@@ -34,11 +34,11 @@ final class MinimalCaseGenerator implements CaseGeneratorStrategy
 
     private function buildCase(int $offset): ObjectCase
     {
-        $builder = new ObjectCaseBuilder($this->classDescription);
+        $builder = new ObjectCaseBuilder($this->classExpectation);
 
-        foreach ($this->classDescription->getPropertyDescriptions() as $propertyDescription) {
+        foreach ($this->classExpectation->getPropertyExpectations() as $propertyExpectation) {
             $builder->addPropertyCase(
-                $propertyDescription->getCases()[$offset % count($propertyDescription->getCases())]
+                $propertyExpectation->getCases()[$offset % count($propertyExpectation->getCases())]
             );
         }
 
@@ -47,14 +47,14 @@ final class MinimalCaseGenerator implements CaseGeneratorStrategy
 
     private function getMaxCases(): int
     {
-        if (count($this->classDescription->getPropertyDescriptions()) === 0) {
+        if (count($this->classExpectation->getPropertyExpectations()) === 0) {
             return 0;
         }
 
         return max(
             ...array_map(
-                static fn (PropertyDescription $propertyDescription) => count($propertyDescription->getInputOutputPairs()),
-                $this->classDescription->getPropertyDescriptions()
+                static fn (PropertyExpectation $propertyExpectation) => count($propertyExpectation->getInputOutputPairs()),
+                $this->classExpectation->getPropertyExpectations()
             )
         );
     }

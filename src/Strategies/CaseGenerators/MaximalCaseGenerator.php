@@ -6,14 +6,14 @@ namespace Sytzez\DataObjectTester\Strategies\CaseGenerators;
 
 use Generator;
 use Sytzez\DataObjectTester\Contracts\Strategies\CaseGeneratorStrategy;
-use Sytzez\DataObjectTester\DataObjects\ClassDescription;
+use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\DataObjects\PropertyCase;
-use Sytzez\DataObjectTester\DataObjects\PropertyDescription;
+use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
 
 final class MaximalCaseGenerator implements CaseGeneratorStrategy
 {
-    private ClassDescription $classDescription;
+    private ClassExpectation $classExpectation;
     private int $numOfCases;
 
     public function __construct(
@@ -22,17 +22,17 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
     }
 
     /**
-     * @param ClassDescription $classDescription
+     * @param ClassExpectation $classExpectation
      * @return Generator<ObjectCase>
      */
-    public function generate(ClassDescription $classDescription): Generator
+    public function generate(ClassExpectation $classExpectation): Generator
     {
         $this->numOfCases = 0;
-        $this->classDescription = $classDescription;
+        $this->classExpectation = $classExpectation;
 
         yield from $this->generatePossibilities(
             [],
-            $classDescription->getPropertyDescriptions(),
+            $classExpectation->getPropertyExpectations(),
         );
 
         return $this->numOfCases;
@@ -40,25 +40,25 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
 
     /**
      * @param array<PropertyCase> $existingPropertyCases
-     * @param array<PropertyDescription> $propertyDescriptions
+     * @param array<PropertyExpectation> $propertyExpectations
      * @return iterable<ObjectCase>
      */
-    private function generatePossibilities(array $existingPropertyCases, array $propertyDescriptions): iterable
+    private function generatePossibilities(array $existingPropertyCases, array $propertyExpectations): iterable
     {
         if ($this->numOfCases >= $this->maxCases) {
             return;
         }
 
-        if (count($propertyDescriptions) === 0) {
+        if (count($propertyExpectations) === 0) {
             $this->numOfCases++;
 
-            yield new ObjectCase($this->classDescription, $existingPropertyCases);
+            yield new ObjectCase($this->classExpectation, $existingPropertyCases);
 
             return;
         }
 
-        $currentProperty = $propertyDescriptions[0];
-        $remainingProperties = array_slice($propertyDescriptions, 1);
+        $currentProperty = $propertyExpectations[0];
+        $remainingProperties = array_slice($propertyExpectations, 1);
 
         foreach ($currentProperty->getCases() as $propertyCase) {
             yield from $this->generatePossibilities(

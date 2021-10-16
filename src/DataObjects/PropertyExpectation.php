@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\DataObjects;
 
-use Sytzez\DataObjectTester\Factories\PropertyDescriptionFactory;
+use Sytzez\DataObjectTester\Factories\PropertyExpectationFactory;
 
-final class PropertyDescription
+final class PropertyExpectation
 {
     /**
      * @param string $getterName
-     * @param array<InputOutputPair> $inputOutputPairs
+     * @param array<InputOutputExpectation> $inputOutputPairs
      */
     public function __construct(
         private string $getterName,
@@ -34,7 +34,7 @@ final class PropertyDescription
     public function getCases(): array
     {
         return array_map(
-            fn (InputOutputPair $pair): PropertyCase => new PropertyCase($this, $pair),
+            fn (InputOutputExpectation $pair): PropertyCase => new PropertyCase($this, $pair),
             $this->getInputOutputPairs()
         );
     }
@@ -42,10 +42,10 @@ final class PropertyDescription
     /**
      * @param string $getterName
      * @param array<mixed> $values
-     * @return PropertyDescription
+     * @return PropertyExpectation
      */
-    public static function create(string $getterName, array $values): PropertyDescription
+    public static function create(string $getterName, array $values): PropertyExpectation
     {
-        return PropertyDescriptionFactory::create($getterName, $values);
+        return PropertyExpectationFactory::create($getterName, $values);
     }
 }

@@ -8,7 +8,7 @@ use Error;
 use Exception;
 use PHPUnit\Framework\Assert;
 use Sytzez\DataObjectTester\Contracts\Strategies\CaseGeneratorStrategy;
-use Sytzez\DataObjectTester\DataObjects\ClassDescription;
+use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\Strategies\CaseGenerators\MinimalCaseGenerator;
 
@@ -18,7 +18,7 @@ final class DataObjectTester
 
     public function __construct(
         private Assert $assert,
-        private ClassDescription $dataClassDescription,
+        private ClassExpectation $dataClassExpectation,
         ?CaseGeneratorStrategy $caseGenerator = null,
     ) {
         if ($caseGenerator) {
@@ -38,12 +38,12 @@ final class DataObjectTester
 
     private function testGettersExist(): void
     {
-        $fqn = $this->dataClassDescription->getFqn();
+        $fqn = $this->dataClassExpectation->getFqn();
 
-        $propertyDescriptions = $this->dataClassDescription->getPropertyDescriptions();
+        $propertyExpectations = $this->dataClassExpectation->getPropertyExpectations();
 
-        foreach ($propertyDescriptions as $propertyDescription) {
-            $methodName = $propertyDescription->getGetterName();
+        foreach ($propertyExpectations as $propertyExpectation) {
+            $methodName = $propertyExpectation->getGetterName();
 
             $this->assert::assertTrue(
                 method_exists($fqn, $methodName),
@@ -54,7 +54,7 @@ final class DataObjectTester
 
     private function testObjectCases(): void
     {
-        $objectCases = $this->caseGenerator->generate($this->dataClassDescription);
+        $objectCases = $this->caseGenerator->generate($this->dataClassExpectation);
 
         foreach ($objectCases as $objectCase) {
             $this->testObjectCase($objectCase);
@@ -63,12 +63,12 @@ final class DataObjectTester
 
     private function testObjectCase(ObjectCase $objectCase): void
     {
-        $fqn = $this->dataClassDescription->getFqn();
+        $fqn = $this->dataClassExpectation->getFqn();
 
         $object = $this->instantiateObject($objectCase);
 
         foreach ($objectCase->getPropertyCases() as $propertyCase) {
-            $getterName = $propertyCase->getDescription()->getGetterName();
+            $getterName = $propertyCase->getExpectation()->getGetterName();
 
             try {
                 $output = $object->{$getterName}();
@@ -90,7 +90,7 @@ final class DataObjectTester
 
     private function instantiateObject(ObjectCase $objectCase): object
     {
-        $fqn = $this->dataClassDescription->getFqn();
+        $fqn = $this->dataClassExpectation->getFqn();
 
         $arguments = $objectCase->getConstructorArguments();
 

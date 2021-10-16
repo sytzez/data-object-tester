@@ -10,19 +10,19 @@ use Sytzez\DataObjectTester\Factories\ObjectCaseFactory;
 final class ObjectCase
 {
     /**
-     * @param ClassDescription $classDescription
+     * @param ClassExpectation $classExpectation
      * @param iterable<PropertyCase> $propertyCases
      */
     public function __construct(
-        private ClassDescription $classDescription,
+        private ClassExpectation $classExpectation,
         private iterable $propertyCases,
     ) {
         $this->validateCompleteness();
     }
 
-    public function getClassDescription(): ClassDescription
+    public function getClassExpectation(): ClassExpectation
     {
-        return $this->classDescription;
+        return $this->classExpectation;
     }
 
     /**
@@ -35,17 +35,17 @@ final class ObjectCase
 
     public function getConstructorArguments(): iterable
     {
-        foreach($this->classDescription->getPropertyDescriptions() as $propertyDescription) {
-            $propertyCase = $this->findCaseByDescription($propertyDescription);
+        foreach($this->classExpectation->getPropertyExpectations() as $propertyExpectation) {
+            $propertyCase = $this->findCaseByExpectation($propertyExpectation);
 
             yield $propertyCase->getInput();
         }
     }
 
-    private function findCaseByDescription(PropertyDescription $propertyDescription): PropertyCase
+    private function findCaseByExpectation(PropertyExpectation $propertyExpectation): PropertyCase
     {
         foreach ($this->propertyCases as $propertyCase) {
-            if ($propertyDescription->getGetterName() === $propertyCase->getDescription()->getGetterName()) {
+            if ($propertyExpectation->getGetterName() === $propertyCase->getExpectation()->getGetterName()) {
                 return $propertyCase;
             }
         }
@@ -53,8 +53,8 @@ final class ObjectCase
 
     private function validateCompleteness(): void
     {
-        foreach($this->classDescription->getPropertyDescriptions() as $propertyDescription) {
-            $propertyCase = $this->findCaseByDescription($propertyDescription);
+        foreach($this->classExpectation->getPropertyExpectations() as $propertyExpectation) {
+            $propertyCase = $this->findCaseByExpectation($propertyExpectation);
 
             if (! $propertyCase) {
                 throw new InvalidArgumentException("Property '$propertyCase->getName()' has no provided case");
@@ -63,12 +63,12 @@ final class ObjectCase
     }
 
     /**
-     * @param ClassDescription $classDescription
+     * @param ClassExpectation $classExpectation
      * @param array<string, mixed> $values
      * @return ObjectCase
      */
-    public static function create(ClassDescription $classDescription, array $values): ObjectCase
+    public static function create(ClassExpectation $classExpectation, array $values): ObjectCase
     {
-        return ObjectCaseFactory::create($classDescription, $values);
+        return ObjectCaseFactory::create($classExpectation, $values);
     }
 }

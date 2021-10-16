@@ -7,14 +7,14 @@ namespace Sytzez\DataObjectTester\DataObjects;
 final class PropertyCase
 {
     public function __construct(
-        private PropertyDescription $description,
-        private InputOutputPair $inputOutputPair,
+        private PropertyExpectation $expectation,
+        private InputOutputExpectation $inputOutputPair,
     ) {
     }
 
-    public function getDescription(): PropertyDescription
+    public function getExpectation(): PropertyExpectation
     {
-        return $this->description;
+        return $this->expectation;
     }
 
     public function getInput()

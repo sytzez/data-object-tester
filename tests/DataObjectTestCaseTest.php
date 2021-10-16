@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\Tests;
 
-use Sytzez\DataObjectTester\DataObjects\ClassDescription;
-use Sytzez\DataObjectTester\DataObjects\InputOutputPair;
+use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
+use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
 use Sytzez\DataObjectTester\DataObjectTestCase;
 use Sytzez\DataObjectTester\Strategies\CaseGenerators\MaximalCaseGenerator;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
@@ -19,7 +19,7 @@ class DataObjectTestCaseTest extends DataObjectTestCase
     public function it_tests_data_objects(): void
     {
         $this->testDataObjects(
-            ClassDescription::create(DataClass::class, [
+            ClassExpectation::create(DataClass::class, [
                 'getString' => ['a', 'b', 'c'],
                 'getInt'    => [1, 2, 3],
                 'getArray'  => [[], [1, 2, 3]],
@@ -41,7 +41,7 @@ class DataObjectTestCaseTest extends DataObjectTestCase
     public function it_tests_data_objects_using_a_specified_generator(): void
     {
         $this->testDataObjects(
-            ClassDescription::create(DataClass::class, [
+            ClassExpectation::create(DataClass::class, [
                 'getString' => ['a', 'b', 'c'],
                 'getInt'    => [1, 2, 3],
                 'getArray'  => [[], [1, 2, 3]],
@@ -64,18 +64,18 @@ class DataObjectTestCaseTest extends DataObjectTestCase
     public function it_tests_transformative_data_objects(): void
     {
         $this->testDataObjects(
-            ClassDescription::create(TransformativeDataClass::class, [
+            ClassExpectation::create(TransformativeDataClass::class, [
                 'getString' => [
-                    new InputOutputPair('a', 'aa'),
-                    new InputOutputPair('b', 'bb'),
+                    new InputOutputExpectation('a', 'aa'),
+                    new InputOutputExpectation('b', 'bb'),
                 ],
                 'getInt'    => [
-                    new InputOutputPair(1, 2),
-                    new InputOutputPair(3, 6),
+                    new InputOutputExpectation(1, 2),
+                    new InputOutputExpectation(3, 6),
                 ],
                 'getArray'  => [
-                    new InputOutputPair([], []),
-                    new InputOutputPair([1, 2, 3], [1, 2, 3, 1, 2, 3]),
+                    new InputOutputExpectation([], []),
+                    new InputOutputExpectation([1, 2, 3], [1, 2, 3, 1, 2, 3]),
                 ],
             ]),
         );

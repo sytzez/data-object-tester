@@ -9,8 +9,8 @@ use Mockery\Adapter\Phpunit\MockeryTestCase;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use Sytzez\DataObjectTester\Contracts\Strategies\CaseGeneratorStrategy;
-use Sytzez\DataObjectTester\DataObjects\ClassDescription;
-use Sytzez\DataObjectTester\DataObjects\InputOutputPair;
+use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
+use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\DataObjectTester;
 use Sytzez\DataObjectTester\Tests\TestHelpers\ConstructorThrowsError;
@@ -39,7 +39,7 @@ class DataObjectTesterTest extends MockeryTestCase
     {
         $fqn = DataClass::class;
 
-        $description = ClassDescription::create($fqn, [
+        $expectation = ClassExpectation::create($fqn, [
             'getString' => ['a'],
             'getInt'    => [1],
             'getArray'  => [[]],
@@ -48,11 +48,11 @@ class DataObjectTesterTest extends MockeryTestCase
         $this->assertAssertMethodsExists($fqn, ['getString', 'getInt', 'getArray']);
 
         $this->caseGeneratorMock->expects('generate')
-            ->with($description)
+            ->with($expectation)
             ->once()
             ->andYield();
 
-        $this->test($description);
+        $this->test($expectation);
     }
 
     /**
@@ -62,7 +62,7 @@ class DataObjectTesterTest extends MockeryTestCase
     {
         $fqn = DataClass::class;
 
-        $description = ClassDescription::create($fqn, [
+        $expectation = ClassExpectation::create($fqn, [
             'getString' => ['a', 'b'],
             'getInt'    => [1, 2],
             'getArray'  => [[]],
@@ -71,17 +71,17 @@ class DataObjectTesterTest extends MockeryTestCase
         $this->assertAssertMethodsExists($fqn, ['getString', 'getInt', 'getArray']);
 
         $this->caseGeneratorMock->expects('generate')
-            ->with($description)
+            ->with($expectation)
             ->once()
             ->andYield(
-                ObjectCase::create($description, [
+                ObjectCase::create($expectation, [
                     'getString' => 'a',
                     'getInt'    => 1,
                     'getArray'  => [],
                 ]),
-                ObjectCase::create($description, [
-                    'getString' => new InputOutputPair('c', 'b'),
-                    'getInt'    => new InputOutputPair(3, 2),
+                ObjectCase::create($expectation, [
+                    'getString' => new InputOutputExpectation('c', 'b'),
+                    'getInt'    => new InputOutputExpectation(3, 2),
                     'getArray'  => [],
                 ]),
             );
@@ -94,7 +94,7 @@ class DataObjectTesterTest extends MockeryTestCase
         $this->assertAssertGetterReturns($fqn, 'getInt', 2, 3);
         $this->assertAssertGetterReturns($fqn, 'getArray', [], []);
 
-        $this->test($description);
+        $this->test($expectation);
     }
 
     /**
@@ -104,12 +104,12 @@ class DataObjectTesterTest extends MockeryTestCase
     {
         $fqn = ConstructorThrowsException::class;
 
-        $description = ClassDescription::create($fqn, []);
+        $expectation = ClassExpectation::create($fqn, []);
 
         $this->caseGeneratorMock->expects('generate')
-            ->with($description)
+            ->with($expectation)
             ->once()
-            ->andYield(ObjectCase::create($description, []));
+            ->andYield(ObjectCase::create($expectation, []));
 
         $this->assertMock->expects('fail')
             ->with("Exception caught while instantiating $fqn: '" . ConstructorThrowsException::MESSAGE . "'")
@@ -118,7 +118,7 @@ class DataObjectTesterTest extends MockeryTestCase
 
         static::expectException(AssertionFailedError::class);
 
-        $this->test($description);
+        $this->test($expectation);
     }
 
     /**
@@ -128,12 +128,12 @@ class DataObjectTesterTest extends MockeryTestCase
     {
         $fqn = ConstructorThrowsError::class;
 
-        $description = ClassDescription::create($fqn, []);
+        $expectation = ClassExpectation::create($fqn, []);
 
         $this->caseGeneratorMock->expects('generate')
-            ->with($description)
+            ->with($expectation)
             ->once()
-            ->andYield(ObjectCase::create($description, []));
+            ->andYield(ObjectCase::create($expectation, []));
 
         $this->assertMock->expects('fail')
             ->with("Error caught while instantiating $fqn: '" . ConstructorThrowsError::MESSAGE . "'")
@@ -142,7 +142,7 @@ class DataObjectTesterTest extends MockeryTestCase
 
         static::expectException(AssertionFailedError::class);
 
-        $this->test($description);
+        $this->test($expectation);
     }
 
     /**
@@ -152,17 +152,17 @@ class DataObjectTesterTest extends MockeryTestCase
     {
         $fqn = GetterThrowsException::class;
 
-        $description = ClassDescription::create($fqn, [
+        $expectation = ClassExpectation::create($fqn, [
             'getNumber' => [1]
         ]);
 
         $this->assertAssertMethodsExists($fqn, ['getNumber']);
 
         $this->caseGeneratorMock->expects('generate')
-            ->with($description)
+            ->with($expectation)
             ->once()
             ->andYield(
-                ObjectCase::create($description, [
+                ObjectCase::create($expectation, [
                     'getNumber' => 1,
                 ]),
             );
@@ -174,7 +174,7 @@ class DataObjectTesterTest extends MockeryTestCase
 
         static::expectException(AssertionFailedError::class);
 
-        $this->test($description);
+        $this->test($expectation);
     }
 
     /**
@@ -184,17 +184,17 @@ class DataObjectTesterTest extends MockeryTestCase
     {
         $fqn = GetterThrowsError::class;
 
-        $description = ClassDescription::create($fqn, [
+        $expectation = ClassExpectation::create($fqn, [
             'getNumber' => [1]
         ]);
 
         $this->assertAssertMethodsExists($fqn, ['getNumber']);
 
         $this->caseGeneratorMock->expects('generate')
-            ->with($description)
+            ->with($expectation)
             ->once()
             ->andYield(
-                ObjectCase::create($description, [
+                ObjectCase::create($expectation, [
                     'getNumber' => 1,
                 ]),
             );
@@ -206,14 +206,14 @@ class DataObjectTesterTest extends MockeryTestCase
 
         static::expectException(AssertionFailedError::class);
 
-        $this->test($description);
+        $this->test($expectation);
     }
 
-    protected function test(ClassDescription $classDescription): void
+    protected function test(ClassExpectation $classExpectation): void
     {
         $tester = new DataObjectTester(
             $this->assertMock,
-            $classDescription,
+            $classExpectation,
             $this->caseGeneratorMock,
         );
 

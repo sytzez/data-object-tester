@@ -6,11 +6,11 @@ namespace Sytzez\DataObjectTester\Factories;
 
 use InvalidArgumentException;
 use Sytzez\DataObjectTester\Builders\ObjectCaseBuilder;
-use Sytzez\DataObjectTester\DataObjects\ClassDescription;
-use Sytzez\DataObjectTester\DataObjects\InputOutputPair;
+use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
+use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\DataObjects\PropertyCase;
-use Sytzez\DataObjectTester\DataObjects\PropertyDescription;
+use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
 
 final class ObjectCaseFactory
 {
@@ -19,13 +19,13 @@ final class ObjectCaseFactory
     }
 
     /**
-     * @param ClassDescription $classDescription
+     * @param ClassExpectation $classExpectation
      * @param array<string, mixed> $values
      * @return ObjectCase
      */
-    public static function create(ClassDescription $classDescription, array $values): ObjectCase
+    public static function create(ClassExpectation $classExpectation, array $values): ObjectCase
     {
-        $builder = new ObjectCaseBuilder($classDescription);
+        $builder = new ObjectCaseBuilder($classExpectation);
 
         foreach ($values as $getterName => $value) {
             if (! is_string($getterName)) {
@@ -34,15 +34,15 @@ final class ObjectCaseFactory
                 );
             }
 
-            $propertyDescription = self::getPropertyByGetterName($classDescription, $getterName);
+            $propertyExpectation = self::getPropertyByGetterName($classExpectation, $getterName);
 
-            $inputOutputPair = $value instanceof InputOutputPair
+            $inputOutputPair = $value instanceof InputOutputExpectation
                 ? $value
-                : new InputOutputPair($value, $value);
+                : new InputOutputExpectation($value, $value);
 
             $builder->addPropertyCase(
                 new PropertyCase(
-                    $propertyDescription,
+                    $propertyExpectation,
                     $inputOutputPair,
                 ),
             );
@@ -52,16 +52,16 @@ final class ObjectCaseFactory
     }
 
     private static function getPropertyByGetterName(
-        ClassDescription $classDescription,
+        ClassExpectation $classExpectation,
         string $getterName,
-    ): PropertyDescription {
+    ): PropertyExpectation {
 
-        foreach ($classDescription->getPropertyDescriptions() as $propertyDescription) {
-            if ($propertyDescription->getGetterName() === $getterName) {
-                return $propertyDescription;
+        foreach ($classExpectation->getPropertyExpectations() as $propertyExpectation) {
+            if ($propertyExpectation->getGetterName() === $getterName) {
+                return $propertyExpectation;
             }
         }
 
-        throw new InvalidArgumentException("Property with getter '$getterName' does not exist in class '$classDescription->getFqn()'");
+        throw new InvalidArgumentException("Property with getter '$getterName' does not exist in class '$classExpectation->getFqn()'");
     }
 }

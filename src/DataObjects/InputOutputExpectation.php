@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\DataObjects;
 
-final class InputOutputPair
+final class InputOutputExpectation
 {
     public function __construct(
         private $input,

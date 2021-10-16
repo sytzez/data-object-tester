@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Sytzez\DataObjectTester\Factories;
 
 use InvalidArgumentException;
-use Sytzez\DataObjectTester\Builders\ClassDescriptionBuilder;
-use Sytzez\DataObjectTester\DataObjects\ClassDescription;
-use Sytzez\DataObjectTester\DataObjects\PropertyDescription;
+use Sytzez\DataObjectTester\Builders\ClassExpectationBuilder;
+use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
+use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
 
-final class ClassDescriptionFactory
+final class ClassExpectationFactory
 {
     private function __construct()
     {
@@ -17,14 +17,14 @@ final class ClassDescriptionFactory
 
     /**
      * @param string $fqn
-     * @param array<string, array<mixed> $description
-     * @return ClassDescription
+     * @param array<string, array<mixed> $expectation
+     * @return ClassExpectation
      */
-    public static function create(string $fqn, iterable $description): ClassDescription
+    public static function create(string $fqn, iterable $expectation): ClassExpectation
     {
-        $builder = new ClassDescriptionBuilder($fqn);
+        $builder = new ClassExpectationBuilder($fqn);
 
-        foreach ($description as $getterName => $values) {
+        foreach ($expectation as $getterName => $values) {
             if (! is_string($getterName)) {
                 throw new InvalidArgumentException(
                     sprintf('Getter name must be a string, %s given', gettype($getterName)),
@@ -37,8 +37,8 @@ final class ClassDescriptionFactory
                 );
             }
 
-            $builder->addPropertyDescription(
-                PropertyDescriptionFactory::create($getterName, $values)
+            $builder->addPropertyExpectation(
+                PropertyExpectationFactory::create($getterName, $values)
             );
         }
 

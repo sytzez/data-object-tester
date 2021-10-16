@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Sytzez\DataObjectTester\Contracts\Strategies;
 
 use Generator;
-use Sytzez\DataObjectTester\DataObjects\ClassDescription;
+use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 
 interface CaseGeneratorStrategy
 {
     /**
-     * @param ClassDescription $classDescription
+     * @param ClassExpectation $classExpectation
      * @return Generator<ObjectCase>
      */
-    public function generate(ClassDescription $classDescription): Generator;
+    public function generate(ClassExpectation $classExpectation): Generator;
 }
