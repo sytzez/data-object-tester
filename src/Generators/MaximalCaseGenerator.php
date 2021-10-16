@@ -41,9 +41,9 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
     /**
      * @param array<PropertyCase> $existingPropertyCases
      * @param array<PropertyExpectation> $propertyExpectations
-     * @return iterable<ObjectCase>
+     * @return Generator<ObjectCase>
      */
-    private function generatePossibilities(array $existingPropertyCases, array $propertyExpectations): iterable
+    private function generatePossibilities(array $existingPropertyCases, array $propertyExpectations): Generator
     {
         if ($this->numOfCases >= $this->maxCases) {
             return;

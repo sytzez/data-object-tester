@@ -20,7 +20,7 @@ final class ClassExpectationFactory
      * @param array<string, array<mixed> $expectation
      * @return ClassExpectation
      */
-    public static function create(string $fqn, iterable $expectation): ClassExpectation
+    public static function create(string $fqn, array $expectation): ClassExpectation
     {
         $builder = new ClassExpectationBuilder($fqn);
 
@@ -33,7 +33,7 @@ final class ClassExpectationFactory
 
             if (! is_array($values)) {
                 throw new InvalidArgumentException(
-                    sprintf("Getter values for '$getterName'' must be an iterable, %s given", gettype($values)),
+                    sprintf("Getter values for '$getterName'' must be an array, %s given", gettype($values)),
                 );
             }
 
