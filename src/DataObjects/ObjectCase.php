@@ -11,11 +11,11 @@ final class ObjectCase
 {
     /**
      * @param ClassExpectation $classExpectation
-     * @param iterable<PropertyCase> $propertyCases
+     * @param array<PropertyCase> $propertyCases
      */
     public function __construct(
         private ClassExpectation $classExpectation,
-        private iterable $propertyCases,
+        private array $propertyCases,
     ) {
         $this->validateCompleteness();
     }
@@ -26,9 +26,9 @@ final class ObjectCase
     }
 
     /**
-     * @return iterable<PropertyCase>
+     * @return array<PropertyCase>
      */
-    public function getPropertyCases(): iterable
+    public function getPropertyCases(): array
     {
         return $this->propertyCases;
     }
@@ -57,7 +57,7 @@ final class ObjectCase
             $propertyCase = $this->findCaseByExpectation($propertyExpectation);
 
             if (! $propertyCase) {
-                throw new InvalidArgumentException("Property '$propertyCase->getName()' has no provided case");
+                throw new InvalidArgumentException("Property '$propertyExpectation->getName()' has no provided case");
             }
         }
     }

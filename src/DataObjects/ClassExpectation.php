@@ -11,7 +11,7 @@ final class ClassExpectation
 {
     public function __construct(
         private string $fqn,
-        private iterable $propertyExpectations,
+        private array $propertyExpectations,
     ) {
         if (! class_exists($this->fqn)) {
             throw new InvalidArgumentException('Class does not exist');
@@ -26,14 +26,14 @@ final class ClassExpectation
     /**
      * @return iterable<PropertyExpectation>
      */
-    public function getPropertyExpectations(): iterable
+    public function getPropertyExpectations(): array
     {
         return $this->propertyExpectations;
     }
 
     /**
      * @param string $fqn
-     * @param iterable<string, iterable<mixed>> $expectation
+     * @param array<string, array<mixed>> $expectation
      * @return ClassExpectation
      */
     public static function create(string $fqn, array $expectation): self
