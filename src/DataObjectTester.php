@@ -7,10 +7,10 @@ namespace Sytzez\DataObjectTester;
 use Error;
 use Exception;
 use PHPUnit\Framework\Assert;
-use Sytzez\DataObjectTester\Contracts\Strategies\CaseGeneratorStrategy;
+use Sytzez\DataObjectTester\Contracts\Generators\CaseGeneratorStrategy;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
-use Sytzez\DataObjectTester\Strategies\CaseGenerators\MinimalCaseGenerator;
+use Sytzez\DataObjectTester\Generators\MinimalCaseGenerator;
 
 final class DataObjectTester
 {

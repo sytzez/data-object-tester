@@ -8,7 +8,7 @@ use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
-use Sytzez\DataObjectTester\Contracts\Strategies\CaseGeneratorStrategy;
+use Sytzez\DataObjectTester\Contracts\Generators\CaseGeneratorStrategy;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;

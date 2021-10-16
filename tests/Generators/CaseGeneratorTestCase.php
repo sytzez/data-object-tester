@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sytzez\DataObjectTester\Tests\Strategies\CaseGenerators;
+namespace Sytzez\DataObjectTester\Tests\Generators;
 
 use Generator;
 use PHPUnit\Framework\TestCase;

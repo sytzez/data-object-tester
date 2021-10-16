@@ -7,7 +7,7 @@ namespace Sytzez\DataObjectTester\Tests;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
 use Sytzez\DataObjectTester\DataObjectTestCase;
-use Sytzez\DataObjectTester\Strategies\CaseGenerators\MaximalCaseGenerator;
+use Sytzez\DataObjectTester\Generators\MaximalCaseGenerator;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
 use Sytzez\DataObjectTester\Tests\TestHelpers\TransformativeDataClass;
 

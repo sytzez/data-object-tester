@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Sytzez\DataObjectTester\Contracts\Strategies;
+namespace Sytzez\DataObjectTester\Contracts\Generators;
 
 use Generator;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
