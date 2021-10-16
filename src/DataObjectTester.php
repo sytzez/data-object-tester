@@ -103,5 +103,6 @@ final class DataObjectTester
             $message = $e->getMessage();
             $this->assert::fail("Error caught while instantiating $fqn: '$message'");
         }
+        // @codeCoverageIgnoreStart
     }
 }
