@@ -9,7 +9,7 @@ Helps automate automated tests in PHPUnit for immutable data objects.
 
 ## Installation
 
-`composer require sytzez/data-object-tester`
+`composer require sytzez/data-object-tester --dev`
 
 ## Usage
 
