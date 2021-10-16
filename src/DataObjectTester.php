@@ -6,7 +6,7 @@ namespace Sytzez\DataObjectTester;
 
 use Error;
 use Exception;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Assert;
 use Sytzez\DataObjectTester\Contracts\Strategies\CaseGeneratorStrategy;
 use Sytzez\DataObjectTester\DataObjects\ClassDescription;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
@@ -17,6 +17,7 @@ final class DataObjectTester
     private CaseGeneratorStrategy $caseGenerator;
 
     public function __construct(
+        private Assert $assert,
         private ClassDescription $dataClassDescription,
         ?CaseGeneratorStrategy $caseGenerator = null,
     ) {
@@ -42,7 +43,7 @@ final class DataObjectTester
         foreach ($propertyDescriptions as $propertyDescription) {
             $methodName = $propertyDescription->getGetterName();
 
-            TestCase::assertTrue(
+            $this->assert::assertTrue(
                 method_exists($fqn, $methodName),
                 "Method $fqn::$methodName() does not exist"
             );
@@ -71,13 +72,13 @@ final class DataObjectTester
                 $output = $object->{$getterName}();
             } catch (Exception $e) {
                 $message = $e->getMessage();
-                TestCase::fail("Exception caught while calling $fqn::$getterName(): '$message'");
+                $this->assert::fail("Exception caught while calling $fqn::$getterName(): '$message'");
             } catch (Error $e) {
                 $message = $e->getMessage();
-                TestCase::fail("Error caught while instantiating $fqn::$getterName(): '$message'");
+                $this->assert::fail("Error caught while instantiating $fqn::$getterName(): '$message'");
             }
 
-            TestCase::assertEquals(
+            $this->assert::assertEquals(
                 $propertyCase->getExpectedOutput(),
                 $output,
                 "$fqn::$getterName() returned an unexpected value",
@@ -95,10 +96,10 @@ final class DataObjectTester
             return new $fqn(...$arguments);
         } catch (Exception $e) {
             $message = $e->getMessage();
-            TestCase::fail("Exception caught while instantiating $fqn: '$message'");
+            $this->assert::fail("Exception caught while instantiating $fqn: '$message'");
         } catch (Error $e) {
             $message = $e->getMessage();
-            TestCase::fail("Error caught while instantiating $fqn: '$message'");
+            $this->assert::fail("Error caught while instantiating $fqn: '$message'");
         }
     }
 }
