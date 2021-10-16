@@ -2,16 +2,16 @@
 
 Helps automate automated tests in PHPUnit for immutable data objects.
 
-## Installation
+### Requirements
 
-*Composer package will be available soon...*
-
-## Requirements
-
-- PHP 8.0 or higher
+- PHP 8.0 or above
 - PHPUnit
 
-## How to use it
+## Installation
+
+`composer require sytzez/data-object-tester`
+
+## Usage
 
 Consider the following data class:
 
