@@ -24,7 +24,7 @@ final class ClassExpectation
     }
 
     /**
-     * @return iterable<PropertyExpectation>
+     * @return array<PropertyExpectation>
      */
     public function getPropertyExpectations(): array
     {
