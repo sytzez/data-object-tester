@@ -38,7 +38,7 @@ final class ClassExpectationFactory
             }
 
             $builder->addPropertyExpectation(
-                PropertyExpectationFactory::create($getterName, $values)
+                PropertyExpectation::create($getterName, $values)
             );
         }
 
