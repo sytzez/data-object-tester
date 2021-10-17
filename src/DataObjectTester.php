@@ -21,13 +21,7 @@ final class DataObjectTester
         private ClassExpectation $dataClassExpectation,
         ?CaseGeneratorStrategy $caseGenerator = null,
     ) {
-        if ($caseGenerator) {
-            $this->caseGenerator = $caseGenerator;
-        } else {
-            // @codeCoverageIgnoreStart
-            $this->caseGenerator = new MinimalCaseGenerator();
-            // @codeCoverageIgnoreEnd
-        }
+        $this->caseGenerator = $caseGenerator ?: new MinimalCaseGenerator();
     }
 
     public function test(): void
