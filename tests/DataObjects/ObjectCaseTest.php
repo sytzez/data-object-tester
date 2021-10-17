@@ -9,6 +9,7 @@ use Sytzez\DataObjectTester\DataObjects\PropertyCase;
 use Sytzez\DataObjectTester\DataObjectTestCase;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
 use Sytzez\DataObjectTester\Tests\TestHelpers\EmptyClass;
+use Sytzez\DataObjectTester\Tests\TestHelpers\GeneratorToArray;
 
 class ObjectCaseTest extends DataObjectTestCase
 {
@@ -58,7 +59,7 @@ class ObjectCaseTest extends DataObjectTestCase
 
         static::assertEquals($expectation, $objectCase->getClassExpectation());
         static::assertEquals($propertyCases, $objectCase->getPropertyCases());
-        static::assertEquals(['a', 1, []], iterator_to_array($objectCase->getConstructorArguments()));
+        static::assertEquals(['a', 1, []], GeneratorToArray::convert($objectCase->getConstructorArguments()));
     }
 
     /**
@@ -93,7 +94,7 @@ class ObjectCaseTest extends DataObjectTestCase
 
         static::assertEquals($expectation, $objectCase->getClassExpectation());
         static::assertEquals($propertyCases, $objectCase->getPropertyCases());
-        static::assertEquals(['a', 1, []], iterator_to_array($objectCase->getConstructorArguments()));
+        static::assertEquals(['a', 1, []], GeneratorToArray::convert($objectCase->getConstructorArguments()));
     }
 
     /**

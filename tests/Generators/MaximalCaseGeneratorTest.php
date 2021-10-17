@@ -9,6 +9,7 @@ use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\Generators\MaximalCaseGenerator;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
 use Sytzez\DataObjectTester\Tests\TestHelpers\EmptyClass;
+use Sytzez\DataObjectTester\Tests\TestHelpers\GeneratorToArray;
 
 class MaximalCaseGeneratorTest extends CaseGeneratorTestCase
 {
@@ -21,7 +22,7 @@ class MaximalCaseGeneratorTest extends CaseGeneratorTestCase
 
         $generator = new MaximalCaseGenerator();
 
-        $cases = static::generatorToArray($generator->generate($classExpectation));
+        $cases = GeneratorToArray::convert($generator->generate($classExpectation));
 
         static::assertCount(1, $cases);
         static::assertEquals($classExpectation, $cases[0]->getClassExpectation());
@@ -41,7 +42,7 @@ class MaximalCaseGeneratorTest extends CaseGeneratorTestCase
 
         $generator = new MaximalCaseGenerator();
 
-        $cases = static::generatorToArray($generator->generate($classExpectation));
+        $cases = GeneratorToArray::convert($generator->generate($classExpectation));
 
         static::assertCount(3 * 2 * 1, $cases);
 
@@ -86,7 +87,7 @@ class MaximalCaseGeneratorTest extends CaseGeneratorTestCase
 
         $generator = new MaximalCaseGenerator(3);
 
-        $cases = static::generatorToArray($generator->generate($classExpectation));
+        $cases = GeneratorToArray::convert($generator->generate($classExpectation));
 
         static::assertCount(3, $cases);
 

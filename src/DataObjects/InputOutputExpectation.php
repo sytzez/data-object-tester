@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\DataObjects;
 
-final class InputOutputExpectation
+use Generator;
+
+class InputOutputExpectation
 {
     public function __construct(
         private $input,
@@ -12,9 +14,9 @@ final class InputOutputExpectation
     ) {
     }
 
-    public function getInput()
+    public function getConstructorArguments(): Generator
     {
-        return $this->input;
+        yield $this->input;
     }
 
     public function getExpectedOutput()

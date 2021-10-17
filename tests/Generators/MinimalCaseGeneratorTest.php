@@ -9,6 +9,7 @@ use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\Generators\MinimalCaseGenerator;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
 use Sytzez\DataObjectTester\Tests\TestHelpers\EmptyClass;
+use Sytzez\DataObjectTester\Tests\TestHelpers\GeneratorToArray;
 
 class MinimalCaseGeneratorTest extends CaseGeneratorTestCase
 {
@@ -21,7 +22,7 @@ class MinimalCaseGeneratorTest extends CaseGeneratorTestCase
 
         $generator = new MinimalCaseGenerator();
 
-        $cases = static::generatorToArray($generator->generate($classExpectation));
+        $cases = GeneratorToArray::convert($generator->generate($classExpectation));
 
         static::assertCount(0, $cases);
     }
@@ -39,7 +40,7 @@ class MinimalCaseGeneratorTest extends CaseGeneratorTestCase
 
         $generator = new MinimalCaseGenerator();
 
-        $cases = static::generatorToArray($generator->generate($classExpectation));
+        $cases = GeneratorToArray::convert($generator->generate($classExpectation));
 
         static::assertCount(3, $cases);
 

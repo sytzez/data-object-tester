@@ -29,10 +29,15 @@ class InputOutputExpectationTest extends DataObjectTestCase
             new DataClass('a', 1, []),
         ];
 
+        $constructorArgumentExpectations = array_map(
+            fn ($value) => new InputOutputExpectation($value, [$value]),
+            $values
+        );
+
         $this->testDataObjects(
             ClassExpectation::create(InputOutputExpectation::class, [
-                'getInput'          => $values,
-                'getExpectedOutput' => $values,
+                'getConstructorArguments' => $constructorArgumentExpectations,
+                'getExpectedOutput'       => $values,
             ]),
             new MaximalCaseGenerator()
         );
