@@ -17,13 +17,8 @@ final class PropertyCase
         return $this->getterName;
     }
 
-    public function getInput()
+    public function getExpectation(): InputOutputExpectation
     {
-        return $this->inputOutputExpectation->getInput();
-    }
-
-    public function getExpectedOutput()
-    {
-        return $this->inputOutputExpectation->getExpectedOutput();
+        return $this->inputOutputExpectation;
     }
 }

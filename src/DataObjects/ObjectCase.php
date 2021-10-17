@@ -39,7 +39,7 @@ final class ObjectCase
         foreach($this->classExpectation->getPropertyExpectations() as $propertyExpectation) {
             $propertyCase = $this->findCaseByExpectation($propertyExpectation);
 
-            yield $propertyCase->getInput();
+            yield $propertyCase->getExpectation()->getInput();
         }
     }
 

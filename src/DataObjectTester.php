@@ -75,7 +75,7 @@ final class DataObjectTester
             }
 
             $this->assert::assertEquals(
-                $propertyCase->getExpectedOutput(),
+                $propertyCase->getExpectation()->getExpectedOutput(),
                 $output,
                 "$fqn::$getterName() returned an unexpected value",
             );

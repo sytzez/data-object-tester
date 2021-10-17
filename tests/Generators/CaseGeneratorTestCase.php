@@ -36,8 +36,8 @@ abstract class CaseGeneratorTestCase extends TestCase
             $propB = $b->getPropertyCases()[$i];
 
             if (
-                $propA->getInput() !== $propB->getInput()
-                || $propA->getExpectedOutput() !== $propB->getExpectedOutput()
+                $propA->getExpectation()->getInput() !== $propB->getExpectation()->getInput()
+                || $propA->getExpectation()->getExpectedOutput() !== $propB->getExpectation()->getExpectedOutput()
             ) {
                 return false;
             }
