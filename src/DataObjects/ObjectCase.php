@@ -54,10 +54,29 @@ final class ObjectCase
         throw new InvalidArgumentException("Getter '" . $propertyExpectation->getGetterName() . "' has no provided case");
     }
 
+    private function findExpectationByCase(PropertyCase $propertyCase): PropertyExpectation
+    {
+        foreach ($this->classExpectation->getPropertyExpectations() as $propertyExpectation) {
+            if ($propertyCase->getExpectation()->getGetterName() === $propertyExpectation->getGetterName()) {
+                return $propertyExpectation;
+            }
+        }
+
+        throw new InvalidArgumentException(
+            "Getter '"
+            . $propertyCase->getExpectation()->getGetterName()
+            . "' does not exist on class expectation"
+        );
+    }
+
     private function validateCompleteness(): void
     {
         foreach($this->classExpectation->getPropertyExpectations() as $propertyExpectation) {
             $this->findCaseByExpectation($propertyExpectation);
+        }
+
+        foreach($this->propertyCases as $propertyCase) {
+            $this->findExpectationByCase($propertyCase);
         }
     }
 
