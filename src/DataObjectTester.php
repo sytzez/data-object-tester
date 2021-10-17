@@ -6,6 +6,7 @@ namespace Sytzez\DataObjectTester;
 
 use Error;
 use Exception;
+use Generator;
 use PHPUnit\Framework\Assert;
 use Sytzez\DataObjectTester\Contracts\Generators\CaseGeneratorStrategy;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
@@ -72,6 +73,10 @@ final class DataObjectTester
             } catch (Error $e) {
                 $message = $e->getMessage();
                 $this->assert::fail("Error caught while calling $fqn::$getterName(): '$message'");
+            }
+
+            if ($output instanceof Generator) {
+                $output = iterator_to_array($output);
             }
 
             $this->assert::assertEquals(
