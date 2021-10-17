@@ -8,7 +8,7 @@ final class PropertyCase
 {
     public function __construct(
         private PropertyExpectation $expectation,
-        private InputOutputExpectation $inputOutputPair,
+        private InputOutputExpectation $inputOutputExpectation,
     ) {
     }
 
@@ -19,11 +19,11 @@ final class PropertyCase
 
     public function getInput()
     {
-        return $this->inputOutputPair->getInput();
+        return $this->inputOutputExpectation->getInput();
     }
 
     public function getExpectedOutput()
     {
-        return $this->inputOutputPair->getExpectedOutput();
+        return $this->inputOutputExpectation->getExpectedOutput();
     }
 }

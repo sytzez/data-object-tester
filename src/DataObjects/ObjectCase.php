@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\DataObjects;
 
+use Generator;
 use InvalidArgumentException;
 use Sytzez\DataObjectTester\Factories\ObjectCaseFactory;
 
@@ -33,7 +34,7 @@ final class ObjectCase
         return $this->propertyCases;
     }
 
-    public function getConstructorArguments(): iterable
+    public function getConstructorArguments(): Generator
     {
         foreach($this->classExpectation->getPropertyExpectations() as $propertyExpectation) {
             $propertyCase = $this->findCaseByExpectation($propertyExpectation);
@@ -49,16 +50,14 @@ final class ObjectCase
                 return $propertyCase;
             }
         }
+
+        throw new InvalidArgumentException("Getter '" . $propertyExpectation->getGetterName() . "' has no provided case");
     }
 
     private function validateCompleteness(): void
     {
         foreach($this->classExpectation->getPropertyExpectations() as $propertyExpectation) {
-            $propertyCase = $this->findCaseByExpectation($propertyExpectation);
-
-            if (! $propertyCase) {
-                throw new InvalidArgumentException("Property '$propertyExpectation->getName()' has no provided case");
-            }
+            $this->findCaseByExpectation($propertyExpectation);
         }
     }
 
