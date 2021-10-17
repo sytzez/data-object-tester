@@ -6,13 +6,15 @@ namespace Sytzez\DataObjectTester\DataObjects;
 
 use Generator;
 use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
+use Sytzez\DataObjectTester\Contracts\PropertyCaseContract;
 use Sytzez\DataObjectTester\Factories\ObjectCaseFactory;
 
 final class ObjectCase
 {
     /**
      * @param ClassExpectation $classExpectation
-     * @param array<PropertyCase> $propertyCases
+     * @param array<PropertyCaseContract> $propertyCases
      */
     public function __construct(
         private ClassExpectation $classExpectation,
@@ -27,56 +29,35 @@ final class ObjectCase
     }
 
     /**
-     * @return array<PropertyCase>
+     * @return array<PropertyCaseContract>
      */
     public function getPropertyCases(): array
     {
         return $this->propertyCases;
     }
 
-    public function getConstructorArguments(): Generator
-    {
-        foreach($this->classExpectation->getPropertyExpectations() as $propertyExpectation) {
-            $propertyCase = $this->findCaseByExpectation($propertyExpectation);
-
-            yield from $propertyCase->getExpectation()->getConstructorArguments();
-        }
-    }
-
-    private function findCaseByExpectation(PropertyExpectation $propertyExpectation): PropertyCase
+    public function makeInstantiationAssertions(TestCase $testCase): void
     {
         foreach ($this->propertyCases as $propertyCase) {
-            if ($propertyExpectation->getGetterName() === $propertyCase->getGetterName()) {
-                return $propertyCase;
-            }
+            $propertyCase->makeInstantiationAssertion($testCase);
         }
-
-        throw new InvalidArgumentException("Getter '" . $propertyExpectation->getGetterName() . "' has no provided case");
     }
 
-    private function findExpectationByCase(PropertyCase $propertyCase): PropertyExpectation
+    public function getConstructorArguments(): Generator
     {
-        foreach ($this->classExpectation->getPropertyExpectations() as $propertyExpectation) {
-            if ($propertyCase->getGetterName() === $propertyExpectation->getGetterName()) {
-                return $propertyExpectation;
-            }
+        foreach ($this->propertyCases as $propertyCase) {
+            yield from $propertyCase->getConstructorArguments();
         }
-
-        throw new InvalidArgumentException(
-            "Getter '"
-            . $propertyCase->getGetterName()
-            . "' does not exist on class expectation"
-        );
     }
 
     private function validateCompleteness(): void
     {
-        foreach($this->classExpectation->getPropertyExpectations() as $propertyExpectation) {
-            $this->findCaseByExpectation($propertyExpectation);
-        }
-
-        foreach($this->propertyCases as $propertyCase) {
-            $this->findExpectationByCase($propertyCase);
+        if (count($this->propertyCases) !== count($this->classExpectation->getPropertyExpectations())) {
+            throw new InvalidArgumentException(
+                'Number of property cases on object case (' . count($this->propertyCases) . ')'
+                . ' does not equal number of properties on class expectation ('
+                . count($this->classExpectation->getPropertyExpectations()) . ')'
+            );
         }
     }
 

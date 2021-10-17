@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\Builders;
 
+use Sytzez\DataObjectTester\Contracts\PropertyCaseContract;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
-use Sytzez\DataObjectTester\DataObjects\PropertyCase;
 
 final class ObjectCaseBuilder
 {
+    /**
+     * @var array<PropertyCaseContract>
+     */
     private array $propertyCases = [];
 
     public function __construct(
@@ -17,7 +20,7 @@ final class ObjectCaseBuilder
     ) {
     }
 
-    public function addPropertyCase(PropertyCase $propertyCase): self
+    public function addPropertyCase(PropertyCaseContract $propertyCase): self
     {
         $this->propertyCases[] = $propertyCase;
 

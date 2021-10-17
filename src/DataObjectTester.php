@@ -6,8 +6,7 @@ namespace Sytzez\DataObjectTester;
 
 use Error;
 use Exception;
-use Generator;
-use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\TestCase;
 use Sytzez\DataObjectTester\Contracts\Generators\CaseGeneratorStrategy;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
@@ -18,7 +17,7 @@ final class DataObjectTester
     private CaseGeneratorStrategy $caseGenerator;
 
     public function __construct(
-        private Assert $assert,
+        private TestCase $testCase,
         private ClassExpectation $dataClassExpectation,
         ?CaseGeneratorStrategy $caseGenerator = null,
     ) {
@@ -40,7 +39,7 @@ final class DataObjectTester
         foreach ($propertyExpectations as $propertyExpectation) {
             $methodName = $propertyExpectation->getGetterName();
 
-            $this->assert::assertTrue(
+            $this->testCase::assertTrue(
                 method_exists($fqn, $methodName),
                 "Method $fqn::$methodName() does not exist"
             );
@@ -63,27 +62,7 @@ final class DataObjectTester
         $object = $this->instantiateObject($objectCase);
 
         foreach ($objectCase->getPropertyCases() as $propertyCase) {
-            $getterName = $propertyCase->getGetterName();
-
-            try {
-                $output = $object->{$getterName}();
-            } catch (Exception $e) {
-                $message = $e->getMessage();
-                $this->assert::fail("Exception caught while calling $fqn::$getterName(): '$message'");
-            } catch (Error $e) {
-                $message = $e->getMessage();
-                $this->assert::fail("Error caught while calling $fqn::$getterName(): '$message'");
-            }
-
-            if ($output instanceof Generator) {
-                $output = iterator_to_array($output);
-            }
-
-            $this->assert::assertEquals(
-                $propertyCase->getExpectation()->getExpectedOutput(),
-                $output,
-                "$fqn::$getterName() returned an unexpected value",
-            );
+            $propertyCase->makeAssertion($this->testCase, $object);
         }
     }
 
@@ -91,16 +70,18 @@ final class DataObjectTester
     {
         $fqn = $this->dataClassExpectation->getFqn();
 
+        $objectCase->makeInstantiationAssertions($this->testCase);
+
         $arguments = $objectCase->getConstructorArguments();
 
         try {
             return new $fqn(...$arguments);
-        } catch (Exception $e) {
+        } catch (Exception $e) { // TODO: don't fail if assertions made
             $message = $e->getMessage();
-            $this->assert::fail("Exception caught while instantiating $fqn: '$message'");
+            $this->testCase::fail("Exception caught while instantiating $fqn: '$message'");
         } catch (Error $e) {
             $message = $e->getMessage();
-            $this->assert::fail("Error caught while instantiating $fqn: '$message'");
+            $this->testCase::fail("Error caught while instantiating $fqn: '$message'");
         }
         // @codeCoverageIgnoreStart
     }

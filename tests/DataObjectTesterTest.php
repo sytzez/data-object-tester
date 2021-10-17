@@ -6,13 +6,13 @@ namespace Sytzez\DataObjectTester\Tests;
 
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\TestCase;
 use Sytzez\DataObjectTester\Contracts\Generators\CaseGeneratorStrategy;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
-use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\DataObjectTester;
+use Sytzez\DataObjectTester\PropertyCases\TransformativePropertyCase;
 use Sytzez\DataObjectTester\Tests\TestHelpers\ConstructorThrowsError;
 use Sytzez\DataObjectTester\Tests\TestHelpers\ConstructorThrowsException;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
@@ -21,13 +21,13 @@ use Sytzez\DataObjectTester\Tests\TestHelpers\GetterThrowsException;
 
 class DataObjectTesterTest extends MockeryTestCase
 {
-    protected Mockery\LegacyMockInterface|Mockery\MockInterface|Assert $assertMock;
+    protected Mockery\LegacyMockInterface|Mockery\MockInterface|TestCase $testCaseMock;
 
     protected CaseGeneratorStrategy|Mockery\LegacyMockInterface|Mockery\MockInterface $caseGeneratorMock;
 
     protected function setUp(): void
     {
-        $this->assertMock = Mockery::mock(Assert::class);
+        $this->testCaseMock = Mockery::mock(TestCase::class);
 
         $this->caseGeneratorMock = Mockery::mock(CaseGeneratorStrategy::class);
     }
@@ -80,8 +80,8 @@ class DataObjectTesterTest extends MockeryTestCase
                     'getArray'  => [],
                 ]),
                 ObjectCase::create($expectation, [
-                    'getString' => new InputOutputExpectation('c', 'b'),
-                    'getInt'    => new InputOutputExpectation(3, 2),
+                    'getString' => new TransformativePropertyCase('c', 'b'),
+                    'getInt'    => new TransformativePropertyCase(3, 2),
                     'getArray'  => [],
                 ]),
             );
@@ -111,7 +111,7 @@ class DataObjectTesterTest extends MockeryTestCase
             ->once()
             ->andYield(ObjectCase::create($expectation, []));
 
-        $this->assertMock->expects('fail')
+        $this->testCaseMock->expects('fail')
             ->with("Exception caught while instantiating $fqn: '" . ConstructorThrowsException::MESSAGE . "'")
             ->once()
             ->andThrow(new AssertionFailedError());
@@ -135,7 +135,7 @@ class DataObjectTesterTest extends MockeryTestCase
             ->once()
             ->andYield(ObjectCase::create($expectation, []));
 
-        $this->assertMock->expects('fail')
+        $this->testCaseMock->expects('fail')
             ->with("Error caught while instantiating $fqn: '" . ConstructorThrowsError::MESSAGE . "'")
             ->once()
             ->andThrow(new AssertionFailedError());
@@ -167,7 +167,7 @@ class DataObjectTesterTest extends MockeryTestCase
                 ]),
             );
 
-        $this->assertMock->expects('fail')
+        $this->testCaseMock->expects('fail')
             ->with("Exception caught while calling $fqn::getNumber(): '" . GetterThrowsException::MESSAGE . "'")
             ->once()
             ->andThrow(new AssertionFailedError());
@@ -199,7 +199,7 @@ class DataObjectTesterTest extends MockeryTestCase
                 ]),
             );
 
-        $this->assertMock->expects('fail')
+        $this->testCaseMock->expects('fail')
             ->with("Error caught while calling $fqn::getNumber(): '" . GetterThrowsError::MESSAGE . "'")
             ->once()
             ->andThrow(new AssertionFailedError());
@@ -212,7 +212,7 @@ class DataObjectTesterTest extends MockeryTestCase
     protected function test(ClassExpectation $classExpectation): void
     {
         $tester = new DataObjectTester(
-            $this->assertMock,
+            $this->testCaseMock,
             $classExpectation,
             $this->caseGeneratorMock,
         );
@@ -223,7 +223,7 @@ class DataObjectTesterTest extends MockeryTestCase
     protected function assertAssertMethodsExists(string $fqn, array $methodNames): void
     {
         foreach ($methodNames as $methodName) {
-            $this->assertMock->expects('assertTrue')
+            $this->testCaseMock->expects('assertTrue')
                 ->with(true, "Method $fqn::$methodName() does not exist")
                 ->once();
         }
@@ -231,7 +231,7 @@ class DataObjectTesterTest extends MockeryTestCase
 
     protected function assertAssertGetterReturns(string $fqn, string $getterName, $expectedOutput, $output): void
     {
-        $this->assertMock->expects('assertEquals')
+        $this->testCaseMock->expects('assertEquals')
             ->with($expectedOutput, $output, "$fqn::$getterName() returned an unexpected value")
             ->once();
     }

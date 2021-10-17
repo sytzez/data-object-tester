@@ -7,6 +7,7 @@ use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\DataObjects\PropertyCase;
 use Sytzez\DataObjectTester\DataObjectTestCase;
+use Sytzez\DataObjectTester\PropertyCases\SimplePropertyCase;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
 use Sytzez\DataObjectTester\Tests\TestHelpers\EmptyClass;
 use Sytzez\DataObjectTester\Tests\TestHelpers\GeneratorToArray;
@@ -41,53 +42,12 @@ class ObjectCaseTest extends DataObjectTestCase
         $properties = $expectation->getPropertyExpectations();
 
         $propertyCases = [
-            new PropertyCase(
-                'getString',
-                new InputOutputExpectation('a', 'a'),
-            ),
-            new PropertyCase(
-                'getInt',
-                new InputOutputExpectation(1, 1),
-            ),
-            new PropertyCase(
-                'getArray',
-                new InputOutputExpectation([], []),
-            ),
-        ];
-
-        $objectCase = new ObjectCase($expectation, $propertyCases);
-
-        static::assertEquals($expectation, $objectCase->getClassExpectation());
-        static::assertEquals($propertyCases, $objectCase->getPropertyCases());
-        static::assertEquals(['a', 1, []], GeneratorToArray::convert($objectCase->getConstructorArguments()));
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_receive_the_property_cases_in_any_order(): void
-    {
-        $expectation = ClassExpectation::create(DataClass::class, [
-            'getString' => ['a', 'b', 'c'],
-            'getInt'    => [1, 2, 3],
-            'getArray'  => [[]],
-        ]);
-
-        $properties = $expectation->getPropertyExpectations();
-
-        $propertyCases = [
-            new PropertyCase(
-                'getArray',
-                new InputOutputExpectation([], []),
-            ),
-            new PropertyCase(
-                'getString',
-                new InputOutputExpectation('a', 'a'),
-            ),
-            new PropertyCase(
-                'getInt',
-                new InputOutputExpectation(1, 1),
-            ),
+            (new SimplePropertyCase('a'))
+                ->setGetterName('getString'),
+            (new SimplePropertyCase(1))
+                ->setGetterName('getInt'),
+            (new SimplePropertyCase([]))
+                ->setGetterName('getArray'),
         ];
 
         $objectCase = new ObjectCase($expectation, $propertyCases);
@@ -111,17 +71,13 @@ class ObjectCaseTest extends DataObjectTestCase
         $properties = $expectation->getPropertyExpectations();
 
         $propertyCases = [
-            new PropertyCase(
-                'getString',
-                new InputOutputExpectation('a', 'a'),
-            ),
-            new PropertyCase(
-                'getInt',
-                new InputOutputExpectation(1, 1),
-            ),
+            (new SimplePropertyCase('a'))
+                ->setGetterName('getString'),
+            (new SimplePropertyCase(1))
+                ->setGetterName('getInt'),
         ];
 
-        static::expectExceptionMessage("Getter 'getArray' has no provided case");
+        static::expectExceptionMessage('Number of property cases on object case (2) does not equal number of properties on class expectation (3)');
 
         new ObjectCase($expectation, $propertyCases);
     }
@@ -140,25 +96,17 @@ class ObjectCaseTest extends DataObjectTestCase
         $properties = $expectation->getPropertyExpectations();
 
         $propertyCases = [
-            new PropertyCase(
-                'getString',
-                new InputOutputExpectation('a', 'a'),
-            ),
-            new PropertyCase(
-                'getInt',
-                new InputOutputExpectation(1, 1),
-            ),
-            new PropertyCase(
-                'getArray',
-                new InputOutputExpectation([], []),
-            ),
-            new PropertyCase(
-                'getSomethingElse',
-                new InputOutputExpectation(123, 456),
-            ),
+            (new SimplePropertyCase('a'))
+                ->setGetterName('getString'),
+            (new SimplePropertyCase(1))
+                ->setGetterName('getInt'),
+            (new SimplePropertyCase([]))
+                ->setGetterName('getArray'),
+            (new SimplePropertyCase(null))
+                ->setGetterName('getSomethingElse'),
         ];
 
-        static::expectExceptionMessage("Getter 'getSomethingElse' does not exist on class expectation");
+        static::expectExceptionMessage('Number of property cases on object case (4) does not equal number of properties on class expectation (3)');
 
         new ObjectCase($expectation, $propertyCases);
     }

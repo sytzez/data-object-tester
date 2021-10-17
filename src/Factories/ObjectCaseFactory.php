@@ -6,10 +6,10 @@ namespace Sytzez\DataObjectTester\Factories;
 
 use InvalidArgumentException;
 use Sytzez\DataObjectTester\Builders\ObjectCaseBuilder;
+use Sytzez\DataObjectTester\Contracts\PropertyCaseContract;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
-use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
-use Sytzez\DataObjectTester\DataObjects\PropertyCase;
+use Sytzez\DataObjectTester\PropertyCases\SimplePropertyCase;
 
 final class ObjectCaseFactory
 {
@@ -33,16 +33,13 @@ final class ObjectCaseFactory
                 );
             }
 
-            $inputOutputPair = $value instanceof InputOutputExpectation
+            $propertyCase = $value instanceof  PropertyCaseContract
                 ? $value
-                : new InputOutputExpectation($value, $value);
+                : new SimplePropertyCase($value);
 
-            $builder->addPropertyCase(
-                new PropertyCase(
-                    $getterName,
-                    $inputOutputPair,
-                ),
-            );
+            $propertyCase->setGetterName($getterName);
+
+            $builder->addPropertyCase($propertyCase);
         }
 
         return $builder->getResult();

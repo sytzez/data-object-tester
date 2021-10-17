@@ -6,9 +6,9 @@ namespace Sytzez\DataObjectTester\Generators;
 
 use Generator;
 use Sytzez\DataObjectTester\Contracts\Generators\CaseGeneratorStrategy;
+use Sytzez\DataObjectTester\Contracts\PropertyCaseContract;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
-use Sytzez\DataObjectTester\DataObjects\PropertyCase;
 use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
 
 final class MaximalCaseGenerator implements CaseGeneratorStrategy
@@ -39,7 +39,7 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
     }
 
     /**
-     * @param array<PropertyCase> $existingPropertyCases
+     * @param array<PropertyCaseContract> $existingPropertyCases
      * @param array<PropertyExpectation> $propertyExpectations
      * @return Generator<ObjectCase>
      */

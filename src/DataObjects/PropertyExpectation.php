@@ -4,18 +4,22 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\DataObjects;
 
+use Sytzez\DataObjectTester\Contracts\PropertyCaseContract;
 use Sytzez\DataObjectTester\Factories\PropertyExpectationFactory;
 
 final class PropertyExpectation
 {
     /**
      * @param string $getterName
-     * @param array<InputOutputExpectation> $inputOutputPairs
+     * @param array<PropertyCaseContract> $cases
      */
     public function __construct(
         private string $getterName,
-        private array $inputOutputPairs,
-    ) { // TODO: canBeOmitted, defaultValue
+        private array $cases,
+    ) {
+        foreach ($this->cases as $case) {
+            $case->setGetterName($this->getterName);
+        }
     }
 
     public function getGetterName(): string
@@ -23,20 +27,9 @@ final class PropertyExpectation
         return $this->getterName;
     }
 
-    public function getInputOutputPairs(): array
-    {
-        return $this->inputOutputPairs;
-    }
-
-    /**
-     * @return array<PropertyCase>
-     */
     public function getCases(): array
     {
-        return array_map(
-            fn (InputOutputExpectation $io): PropertyCase => new PropertyCase($this->getterName, $io),
-            $this->getInputOutputPairs()
-        );
+        return $this->cases;
     }
 
     /**

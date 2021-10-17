@@ -4,27 +4,30 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\Builders;
 
-use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
+use Sytzez\DataObjectTester\Contracts\PropertyCaseContract;
 use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
 
 final class PropertyExpectationBuilder
 {
-    private array $inputOutputPairs = [];
+    /**
+     * @var array<PropertyCaseContract>
+     */
+    private array $cases = [];
 
     public function __construct(
         private string $getterName,
     ) {
     }
 
-    public function addInputOutputPair(InputOutputExpectation $inputOutputPair): self
+    public function addCase(PropertyCaseContract $case): self
     {
-        $this->inputOutputPairs[] = $inputOutputPair;
+        $this->cases[] = $case;
 
         return $this;
     }
 
     public function getResult(): PropertyExpectation
     {
-        return new PropertyExpectation($this->getterName, $this->inputOutputPairs);
+        return new PropertyExpectation($this->getterName, $this->cases);
     }
 }

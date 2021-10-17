@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Sytzez\DataObjectTester\Factories;
 
 use Sytzez\DataObjectTester\Builders\PropertyExpectationBuilder;
-use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
+use Sytzez\DataObjectTester\Contracts\PropertyCaseContract;
 use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
+use Sytzez\DataObjectTester\PropertyCases\SimplePropertyCase;
 
 final class PropertyExpectationFactory
 {
@@ -24,13 +25,11 @@ final class PropertyExpectationFactory
         $builder = new PropertyExpectationBuilder($getterName);
 
         foreach ($values as $value) {
-            if ($value instanceof  InputOutputExpectation) {
-                $builder->addInputOutputPair($value);
-            } else {
-                $builder->addInputOutputPair(
-                    new InputOutputExpectation($value, $value),
-                );
-            }
+            $builder->addCase(
+                $value instanceof  PropertyCaseContract
+                    ? $value
+                    : new SimplePropertyCase($value)
+            );
         }
 
         return $builder->getResult();

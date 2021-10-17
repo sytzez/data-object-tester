@@ -8,6 +8,7 @@ use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
 use Sytzez\DataObjectTester\DataObjectTestCase;
 use Sytzez\DataObjectTester\Generators\MaximalCaseGenerator;
+use Sytzez\DataObjectTester\PropertyCases\TransformativePropertyCase;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
 use Sytzez\DataObjectTester\Tests\TestHelpers\TransformativeDataClass;
 
@@ -66,16 +67,16 @@ class DataObjectTestCaseTest extends DataObjectTestCase
         $this->testDataObjects(
             ClassExpectation::create(TransformativeDataClass::class, [
                 'getString' => [
-                    new InputOutputExpectation('a', 'aa'),
-                    new InputOutputExpectation('b', 'bb'),
+                    new TransformativePropertyCase('a', 'aa'),
+                    new TransformativePropertyCase('b', 'bb'),
                 ],
                 'getInt'    => [
-                    new InputOutputExpectation(1, 2),
-                    new InputOutputExpectation(3, 6),
+                    new TransformativePropertyCase(1, 2),
+                    new TransformativePropertyCase(3, 6),
                 ],
                 'getArray'  => [
-                    new InputOutputExpectation([], []),
-                    new InputOutputExpectation([1, 2, 3], [1, 2, 3, 1, 2, 3]),
+                    new TransformativePropertyCase([], []),
+                    new TransformativePropertyCase([1, 2, 3], [1, 2, 3, 1, 2, 3]),
                 ],
             ]),
         );

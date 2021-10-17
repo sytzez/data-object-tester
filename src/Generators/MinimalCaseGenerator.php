@@ -53,7 +53,7 @@ final class MinimalCaseGenerator implements CaseGeneratorStrategy
 
         return max(
             ...array_map(
-                static fn (PropertyExpectation $propertyExpectation) => count($propertyExpectation->getInputOutputPairs()),
+                static fn (PropertyExpectation $propertyExpectation) => count($propertyExpectation->getCases()),
                 $this->classExpectation->getPropertyExpectations()
             )
         );

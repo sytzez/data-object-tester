@@ -2,25 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Sytzez\DataObjectTester\DataObjects;
+namespace Sytzez\DataObjectTester\PropertyCases;
 
 use Generator;
 
-class InputOutputExpectation
+final class TransformativePropertyCase extends AbstractSuccessfulPropertyCase
 {
     public function __construct(
         private $input,
-        private $expectedOutput,
+        $expectedOutput,
     ) {
+        $this->expectedOutput = $expectedOutput;
     }
 
     public function getConstructorArguments(): Generator
     {
         yield $this->input;
-    }
-
-    public function getExpectedOutput()
-    {
-        return $this->expectedOutput;
     }
 }
