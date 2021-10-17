@@ -62,7 +62,7 @@ final class DataObjectTester
         $object = $this->instantiateObject($objectCase);
 
         foreach ($objectCase->getPropertyCases() as $propertyCase) {
-            $getterName = $propertyCase->getExpectation()->getGetterName();
+            $getterName = $propertyCase->getGetterName();
 
             try {
                 $output = $object->{$getterName}();

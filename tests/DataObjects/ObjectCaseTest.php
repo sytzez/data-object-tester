@@ -6,7 +6,6 @@ use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\DataObjects\PropertyCase;
-use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
 use Sytzez\DataObjectTester\DataObjectTestCase;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
 use Sytzez\DataObjectTester\Tests\TestHelpers\EmptyClass;
@@ -42,15 +41,15 @@ class ObjectCaseTest extends DataObjectTestCase
 
         $propertyCases = [
             new PropertyCase(
-                $properties[0],
+                'getString',
                 new InputOutputExpectation('a', 'a'),
             ),
             new PropertyCase(
-                $properties[1],
+                'getInt',
                 new InputOutputExpectation(1, 1),
             ),
             new PropertyCase(
-                $properties[2],
+                'getArray',
                 new InputOutputExpectation([], []),
             ),
         ];
@@ -77,15 +76,15 @@ class ObjectCaseTest extends DataObjectTestCase
 
         $propertyCases = [
             new PropertyCase(
-                $properties[2],
+                'getArray',
                 new InputOutputExpectation([], []),
             ),
             new PropertyCase(
-                $properties[0],
+                'getString',
                 new InputOutputExpectation('a', 'a'),
             ),
             new PropertyCase(
-                $properties[1],
+                'getInt',
                 new InputOutputExpectation(1, 1),
             ),
         ];
@@ -112,11 +111,11 @@ class ObjectCaseTest extends DataObjectTestCase
 
         $propertyCases = [
             new PropertyCase(
-                $properties[0],
+                'getString',
                 new InputOutputExpectation('a', 'a'),
             ),
             new PropertyCase(
-                $properties[1],
+                'getInt',
                 new InputOutputExpectation(1, 1),
             ),
         ];
@@ -141,19 +140,19 @@ class ObjectCaseTest extends DataObjectTestCase
 
         $propertyCases = [
             new PropertyCase(
-                $properties[0],
+                'getString',
                 new InputOutputExpectation('a', 'a'),
             ),
             new PropertyCase(
-                $properties[1],
+                'getInt',
                 new InputOutputExpectation(1, 1),
             ),
             new PropertyCase(
-                $properties[2],
+                'getArray',
                 new InputOutputExpectation([], []),
             ),
             new PropertyCase(
-                new PropertyExpectation('getSomethingElse', []),
+                'getSomethingElse',
                 new InputOutputExpectation(123, 456),
             ),
         ];

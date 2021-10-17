@@ -10,7 +10,6 @@ use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\DataObjects\PropertyCase;
-use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
 
 final class ObjectCaseFactory
 {
@@ -34,34 +33,18 @@ final class ObjectCaseFactory
                 );
             }
 
-            $propertyExpectation = self::getPropertyByGetterName($classExpectation, $getterName);
-
             $inputOutputPair = $value instanceof InputOutputExpectation
                 ? $value
                 : new InputOutputExpectation($value, $value);
 
             $builder->addPropertyCase(
                 new PropertyCase(
-                    $propertyExpectation,
+                    $getterName,
                     $inputOutputPair,
                 ),
             );
         }
 
         return $builder->getResult();
-    }
-
-    private static function getPropertyByGetterName(
-        ClassExpectation $classExpectation,
-        string $getterName,
-    ): PropertyExpectation {
-
-        foreach ($classExpectation->getPropertyExpectations() as $propertyExpectation) {
-            if ($propertyExpectation->getGetterName() === $getterName) {
-                return $propertyExpectation;
-            }
-        }
-
-        throw new InvalidArgumentException("Property with getter '$getterName' does not exist in class '$classExpectation->getFqn()'");
     }
 }

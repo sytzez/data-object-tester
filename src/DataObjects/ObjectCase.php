@@ -46,7 +46,7 @@ final class ObjectCase
     private function findCaseByExpectation(PropertyExpectation $propertyExpectation): PropertyCase
     {
         foreach ($this->propertyCases as $propertyCase) {
-            if ($propertyExpectation->getGetterName() === $propertyCase->getExpectation()->getGetterName()) {
+            if ($propertyExpectation->getGetterName() === $propertyCase->getGetterName()) {
                 return $propertyCase;
             }
         }
@@ -57,14 +57,14 @@ final class ObjectCase
     private function findExpectationByCase(PropertyCase $propertyCase): PropertyExpectation
     {
         foreach ($this->classExpectation->getPropertyExpectations() as $propertyExpectation) {
-            if ($propertyCase->getExpectation()->getGetterName() === $propertyExpectation->getGetterName()) {
+            if ($propertyCase->getGetterName() === $propertyExpectation->getGetterName()) {
                 return $propertyExpectation;
             }
         }
 
         throw new InvalidArgumentException(
             "Getter '"
-            . $propertyCase->getExpectation()->getGetterName()
+            . $propertyCase->getGetterName()
             . "' does not exist on class expectation"
         );
     }

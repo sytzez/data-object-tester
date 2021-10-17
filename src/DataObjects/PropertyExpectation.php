@@ -34,7 +34,7 @@ final class PropertyExpectation
     public function getCases(): array
     {
         return array_map(
-            fn (InputOutputExpectation $io): PropertyCase => new PropertyCase($this, $io),
+            fn (InputOutputExpectation $io): PropertyCase => new PropertyCase($this->getterName, $io),
             $this->getInputOutputPairs()
         );
     }
