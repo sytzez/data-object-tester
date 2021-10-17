@@ -100,9 +100,26 @@ The default cap is 100.
 
 You can also provide your own case generators by implementing the [CaseGeneratorStrategy](src/Contracts/Generators/CaseGeneratorStrategy.php).
 
-### Testing transformative classes
+### Testing optional arguments
 
-If your data class alters the passed in values in some way, you can use the `InputOutputExpectation` class in your class expectation.
+If an argument can be optional (having a default value), you can use a `DefaultPropertyCase` to define the default expected value.
+
+```php
+use Sytzez\DataObjectTester\DataObjects\ClassExpectation
+use Sytzez\DataObjectTester\PropertyCases\DefaultPropertyCase;
+
+ClassExpectation::create(ValidatedDataClass::class, [
+    'getNumber' => [
+        1, 
+        10,
+        new Sytzez\DataObjectTester\PropertyCases\DefaultPropertyCase(0),
+    ],
+]),
+```
+
+### Testing transformative properties
+
+If your data class alters the passed in values in some way, you can use the `TransformativePropertyCase` class in your class expectation.
 
 Let's say your getter looks like this:
 
@@ -117,18 +134,38 @@ Then you could write the class expectation like this:
 
 ```php
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation
-use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation
+use Sytzez\DataObjectTester\PropertyCases\TransformativePropertyCase;
 
 ClassExpectation::create(TransformativeDataClass::class, [
     'getString' => [
-        new InputOutputExpectation('hello', 'Hello'),
-        new InputOutputExpectation('world', 'World'),
+        new TransformativePropertyCase('hello', 'Hello'),
+        new TransformativePropertyCase('world', 'World'),
     ],
 ]),
 ```
 
+### Testing validation errors and exceptions
+
+If passing certain values should cause an error or exception to be thrown during instantiation,
+use the `ConstructorErrorPropertyCase` and `ConstructorExceptionPropertyCase`. Example:
+
+```php
+use Sytzez\DataObjectTester\DataObjects\ClassExpectation
+use Sytzez\DataObjectTester\PropertyCases\ConstructorExceptionPropertyCase;
+
+ClassExpectation::create(ValidatedDataClass::class, [
+    'getNumber' => [
+        1, 
+        10,
+        new ConstructorExceptionPropertyCase(-1, 'Number cannot be negative'),
+    ],
+]),
+```
+
+
 ## TODO
 
-- Handling optional arguments
+- Handling optional arguments (needs work: in case generators)
+- Handling exceptions (needs work: multiple exceptions at once?)
 - Unit test every class
 - Setup github actions
