@@ -217,7 +217,7 @@ class DataObjectTesterTest extends MockeryTestCase
             $this->caseGeneratorMock,
         );
 
-        $tester->test();
+        $tester->run();
     }
 
     protected function assertAssertMethodsExists(string $fqn, array $methodNames): void

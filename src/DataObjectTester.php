@@ -24,13 +24,13 @@ final class DataObjectTester
         $this->caseGenerator = $caseGenerator ?: new MinimalCaseGenerator();
     }
 
-    public function test(): void
+    public function run(): void
     {
-        $this->testGettersExist();
+        $this->assertGettersExist();
         $this->testObjectCases();
     }
 
-    private function testGettersExist(): void
+    private function assertGettersExist(): void
     {
         $fqn = $this->dataClassExpectation->getFqn();
 

@@ -16,6 +16,6 @@ abstract class DataObjectTestCase extends TestCase
     ): void {
         $tester = new DataObjectTester($this, $classExpectation, $caseGenerator);
 
-        $tester->test();
+        $tester->run();
     }
 }
