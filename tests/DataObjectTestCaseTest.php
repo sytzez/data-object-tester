@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Sytzez\DataObjectTester\Tests;
 
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
-use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
 use Sytzez\DataObjectTester\DataObjectTestCase;
 use Sytzez\DataObjectTester\Generators\MaximalCaseGenerator;
 use Sytzez\DataObjectTester\PropertyCases\ConstructorExceptionPropertyCase;
