@@ -8,9 +8,11 @@ use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
 use Sytzez\DataObjectTester\DataObjectTestCase;
 use Sytzez\DataObjectTester\Generators\MaximalCaseGenerator;
+use Sytzez\DataObjectTester\PropertyCases\ConstructorExceptionPropertyCase;
 use Sytzez\DataObjectTester\PropertyCases\TransformativePropertyCase;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
 use Sytzez\DataObjectTester\Tests\TestHelpers\TransformativeDataClass;
+use Sytzez\DataObjectTester\Tests\TestHelpers\ValidatedDataClass;
 
 class DataObjectTestCaseTest extends DataObjectTestCase
 {
@@ -88,5 +90,28 @@ class DataObjectTestCaseTest extends DataObjectTestCase
         $expectedAssertCount = $expectedGettersExistAssertCount + $expectedGetterOutputAssertCount;
 
         static::assertEquals($expectedAssertCount, static::getCount());
+    }
+
+    /**
+     * @test
+     */
+    public function it_tests_validation_exceptions(): void
+    {
+        $this->testDataObjects(
+            ClassExpectation::create(ValidatedDataClass::class, [
+                'getString' => [
+                    'a',
+                    'aa',
+                    'aaa',
+                    new ConstructorExceptionPropertyCase('aaaa', ValidatedDataClass::STRING_TOO_LONG),
+                ],
+                'getInt'    => [
+                    0,
+                    1,
+                    PHP_INT_MAX,
+                    new ConstructorExceptionPropertyCase(-1, ValidatedDataClass::NEGATIVE_INT),
+                ],
+            ]),
+        );
     }
 }

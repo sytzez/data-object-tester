@@ -13,7 +13,10 @@ interface PropertyCaseContract
 
     public function getConstructorArguments(): Generator;
 
-    public function makeInstantiationAssertion(TestCase $testCase): void;
+    /**
+     * @return Generator<string>
+     */
+    public function getConstructorExceptions(): Generator;
 
     public function makeAssertion(TestCase $testCase, object $object): void;
 }

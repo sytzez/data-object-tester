@@ -20,9 +20,12 @@ final class ConstructorExceptionPropertyCase extends AbstractPropertyCase
         yield $this->input;
     }
 
-    public function makeInstantiationAssertion(TestCase $testCase): void
+    /**
+     * @return Generator<string>
+     */
+    public function getConstructorExceptions(): Generator
     {
-        $testCase->expectExceptionMessage($this->message);
+        yield $this->message;
     }
 
     public function makeAssertion(TestCase $testCase, object $object): void

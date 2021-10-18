@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\DataObjects;
 
+use Exception;
 use Generator;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -36,10 +37,13 @@ final class ObjectCase
         return $this->propertyCases;
     }
 
-    public function makeInstantiationAssertions(TestCase $testCase): void
+    /**
+     * @return Generator<string>
+     */
+    public function getConstructorExceptions(): Generator
     {
         foreach ($this->propertyCases as $propertyCase) {
-            $propertyCase->makeInstantiationAssertion($testCase);
+            yield from $propertyCase->getConstructorExceptions();
         }
     }
 

@@ -144,10 +144,10 @@ ClassExpectation::create(TransformativeDataClass::class, [
 ]),
 ```
 
-### Testing validation errors and exceptions
+### Testing validation exceptions
 
 If passing certain values should cause an error or exception to be thrown during instantiation,
-use the `ConstructorErrorPropertyCase` and `ConstructorExceptionPropertyCase`. Example:
+use the `ConstructorExceptionPropertyCase`. Example:
 
 ```php
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation

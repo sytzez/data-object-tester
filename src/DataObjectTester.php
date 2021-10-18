@@ -57,32 +57,48 @@ final class DataObjectTester
 
     private function testObjectCase(ObjectCase $objectCase): void
     {
-        $fqn = $this->dataClassExpectation->getFqn();
-
         $object = $this->instantiateObject($objectCase);
+
+        // Expected exception was caught
+        if ($object === false) {
+            return;
+        }
 
         foreach ($objectCase->getPropertyCases() as $propertyCase) {
             $propertyCase->makeAssertion($this->testCase, $object);
         }
     }
 
-    private function instantiateObject(ObjectCase $objectCase): object
+    private function instantiateObject(ObjectCase $objectCase): object | false
     {
         $fqn = $this->dataClassExpectation->getFqn();
 
-        $objectCase->makeInstantiationAssertions($this->testCase);
-
         $arguments = $objectCase->getConstructorArguments();
+        $expectedExceptionMessages = $objectCase->getConstructorExceptions();
+
+        if ($this->testCase->getExpectedExceptionMessage() !== null) {
+            return new $fqn(...$arguments);
+        }
 
         try {
-            return new $fqn(...$arguments);
-        } catch (Exception $e) { // TODO: don't fail if assertions made
+            $object = new $fqn(...$arguments);
+        } catch (Exception | Error $e) {
+            $class = $e::class;
             $message = $e->getMessage();
-            $this->testCase::fail("Exception caught while instantiating $fqn: '$message'");
-        } catch (Error $e) {
-            $message = $e->getMessage();
-            $this->testCase::fail("Error caught while instantiating $fqn: '$message'");
+
+            foreach($expectedExceptionMessages as $expectedExceptionMessage) {
+                if ($message === $expectedExceptionMessage) {
+                    return false;
+                }
+            }
+
+            $this->testCase::fail("$class caught while instantiating $fqn: '$message'");
         }
-        // @codeCoverageIgnoreStart
+
+        foreach($expectedExceptionMessages as $expectedExceptionMessage) {
+            $this->testCase::fail("No exception thrown in $fqn::__construct(), expected exception with message '$expectedExceptionMessage'");
+        }
+
+        return $object;
     }
 }
