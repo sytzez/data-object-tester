@@ -16,6 +16,6 @@ final class DefaultPropertyCase extends AbstractSuccessfulPropertyCase
 
     public function getConstructorArguments(): Generator
     {
-        // yield nothing
+        yield from [];
     }
 }
