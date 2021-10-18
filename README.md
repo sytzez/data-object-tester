@@ -74,32 +74,6 @@ The tester will construct a couple of objects using those values, and assert tha
 
 ## Advanced features
 
-### Test case generator
-
-By default, a minimal amount of objects is created, covering each specified property value at least once.
-But if you wish to cover every possible combination of property values, you can use a `MaximalCaseGenerator`,
-by passing it as the second argument to `testDataObjects`, like so:
-
-```php
-use Sytzez\DataObjectTester\Generators\MaximalCaseGenerator
-
-$this->testDataObjects(
-    ClassExpectation::create(DataClass::class, [
-        'getString' => ['hello', 'world'],
-        'getInt'    => [0, -1, PHP_INT_MAX],
-        'getArray'  => [['a', 'b', 'c'], [1, 2, 3]],
-    ]),
-    new MaximalCaseGenerator()
-);
-```
-
-In this case, 12 (2 * 3 * 2) objects will be instantiated and tested, instead of the minimum of 3 cases.
-
-You can cap the number of objects by providing an argument to the generator, e.g. `new MaximalCaseGenerator(20)`.
-The default cap is 100.
-
-You can also provide your own case generators by implementing the [CaseGeneratorStrategy](src/Contracts/Generators/CaseGeneratorStrategy.php).
-
 ### Testing optional arguments
 
 If an argument can be optional (having a default value), you can use a `DefaultPropertyCase` to define the default expected value.
@@ -112,10 +86,42 @@ ClassExpectation::create(ValidatedDataClass::class, [
     'getNumber' => [
         1, 
         10,
-        new Sytzez\DataObjectTester\PropertyCases\DefaultPropertyCase(0),
+        new DefaultPropertyCase(0),
     ],
 ]),
 ```
+
+### Testing validation exceptions
+
+If passing certain values should cause an error or exception to be thrown during instantiation,
+use the `ConstructorExceptionPropertyCase`. So if your constructor looks like this;
+
+```php
+public function __construct(
+    private int $number,
+) {
+    if ($number < 0) {
+        throw new \InvalidArgumentException('Number cannot be negative');
+    }
+}
+```
+
+You can test it like this:
+
+```php
+use Sytzez\DataObjectTester\DataObjects\ClassExpectation
+use Sytzez\DataObjectTester\PropertyCases\ConstructorExceptionPropertyCase;
+
+ClassExpectation::create(ValidatedDataClass::class, [
+    'getNumber' => [
+        1, 
+        10,
+        new ConstructorExceptionPropertyCase(-1, 'Number cannot be negative'),
+    ],
+]),
+```
+
+If multiple arguments should cause an exception, the test will assert that one the possible exceptions will be thrown.
 
 ### Testing transformative properties
 
@@ -144,23 +150,32 @@ ClassExpectation::create(TransformativeDataClass::class, [
 ]),
 ```
 
-### Testing validation exceptions
+### Test case generator
 
-If passing certain values should cause an error or exception to be thrown during instantiation,
-use the `ConstructorExceptionPropertyCase`. Example:
+By default, a minimal amount of objects is created, covering each specified property value at least once.
+But if you wish to cover every possible combination of property values, you can use a `MaximalCaseGenerator`,
+by passing it as the second argument to `testDataObjects`, like so:
 
 ```php
-use Sytzez\DataObjectTester\DataObjects\ClassExpectation
-use Sytzez\DataObjectTester\PropertyCases\ConstructorExceptionPropertyCase;
+use Sytzez\DataObjectTester\Generators\MaximalCaseGenerator
 
-ClassExpectation::create(ValidatedDataClass::class, [
-    'getNumber' => [
-        1, 
-        10,
-        new ConstructorExceptionPropertyCase(-1, 'Number cannot be negative'),
-    ],
-]),
+$this->testDataObjects(
+    ClassExpectation::create(DataClass::class, [
+        'getString' => ['hello', 'world'],
+        'getInt'    => [0, -1, PHP_INT_MAX],
+        'getArray'  => [['a', 'b', 'c'], [1, 2, 3]],
+    ]),
+    new MaximalCaseGenerator()
+);
 ```
+
+In this case, 12 (2 * 3 * 2) objects will be instantiated and tested, instead of the minimum of 3 cases.
+
+You can cap the number of objects by providing an argument to the generator, e.g. `new MaximalCaseGenerator(20)`.
+The default cap is 100.
+
+You can also provide your own case generators by implementing the [CaseGeneratorStrategy](src/Contracts/Generators/CaseGeneratorStrategy.php).
+
 
 
 ## TODO
