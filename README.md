@@ -154,6 +154,23 @@ ClassExpectation::create(TransformativeDataClass::class, [
 ]),
 ```
 
+### Testing with closures
+
+You can use the `ClosurePropertyCase` to do your own validation of getter output by writing a closure return `true` or `false`.
+Example:
+
+```php
+use \Sytzez\DataObjectTester\PropertyCases\ClosurePropertyCase;
+
+'getCollection' => new ClosurePropertyCase(
+    new ArrayCollection([1, 2, 3]),
+    static fn (Collection $output): bool =>
+        $output->contains(1)
+        && $output->contains(2)
+        && $output->contains(3)
+),
+```
+
 ### Test case generator
 
 By default, a minimal amount of objects is created, covering each specified property value at least once.
