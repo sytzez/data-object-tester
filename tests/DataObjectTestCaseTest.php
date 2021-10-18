@@ -8,8 +8,10 @@ use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjectTestCase;
 use Sytzez\DataObjectTester\Generators\MaximalCaseGenerator;
 use Sytzez\DataObjectTester\PropertyCases\ConstructorExceptionPropertyCase;
+use Sytzez\DataObjectTester\PropertyCases\DefaultPropertyCase;
 use Sytzez\DataObjectTester\PropertyCases\TransformativePropertyCase;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
+use Sytzez\DataObjectTester\Tests\TestHelpers\DataClassWithDefaults;
 use Sytzez\DataObjectTester\Tests\TestHelpers\TransformativeDataClass;
 use Sytzez\DataObjectTester\Tests\TestHelpers\ValidatedDataClass;
 
@@ -111,6 +113,28 @@ class DataObjectTestCaseTest extends DataObjectTestCase
                     new ConstructorExceptionPropertyCase(-1, ValidatedDataClass::NEGATIVE_INT),
                 ],
             ]),
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_tests_default_values(): void
+    {
+        $this->testDataObjects(
+            ClassExpectation::create(DataClassWithDefaults::class, [
+                'getString' => [
+                    'a',
+                    'b',
+                    new DefaultPropertyCase(DataClassWithDefaults::DEFAULT_STRING),
+                ],
+                'getInt'    => [
+                    0,
+                    1,
+                    new DefaultPropertyCase(DataClassWithDefaults::DEFAULT_INT),
+                ],
+            ]),
+            new MaximalCaseGenerator()
         );
     }
 }
