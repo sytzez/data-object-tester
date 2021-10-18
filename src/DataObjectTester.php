@@ -76,10 +76,6 @@ final class DataObjectTester
         $arguments = $objectCase->getConstructorArguments();
         $expectedExceptionMessages = $objectCase->getConstructorExceptions();
 
-        if ($this->testCase->getExpectedExceptionMessage() !== null) {
-            return new $fqn(...$arguments);
-        }
-
         try {
             $object = new $fqn(...$arguments);
         } catch (Exception | Error $e) {
