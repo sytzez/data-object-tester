@@ -1,6 +1,10 @@
 # Data Object Tester
 
-Helps automate automated tests in PHPUnit for immutable data objects.
+Should you even unit test your data object classes? 
+With DataObjectTester it's so effortless that you don't even need to ask yourself that question!
+It automates doing automated tests in PHPUnit for immutable data objects.
+Within a minute, you'll have written a test that covers all possible cases.
+Check out the code below to see how it works.
 
 ### Requirements
 
@@ -72,7 +76,7 @@ The array in the class expectation lists the getters, in the same order as their
 For each property, any number of possible values can be given. 
 The tester will construct a couple of objects using those values, and assert that the getters return the right values.
 
-## Advanced features
+## Features
 
 ### Testing optional arguments
 
@@ -176,7 +180,9 @@ The default cap is 100.
 
 You can also provide your own case generators by implementing the [CaseGeneratorStrategy](src/Contracts/Generators/CaseGeneratorStrategy.php).
 
+### Special cases
 
+If there is a case not (yet) covered by the package, you can of course still add your own `@test` methods to the test case.
 
 ## TODO
 
