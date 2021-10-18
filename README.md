@@ -166,6 +166,5 @@ ClassExpectation::create(ValidatedDataClass::class, [
 ## TODO
 
 - Handling optional arguments (needs work: in case generators)
-- Handling exceptions (needs work: multiple exceptions at once?)
 - Unit test every class
 - Setup github actions
