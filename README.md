@@ -98,7 +98,7 @@ ClassExpectation::create(ValidatedDataClass::class, [
 ### Testing validation exceptions
 
 If passing certain values should cause an error or exception to be thrown during instantiation,
-use the `ConstructorExceptionPropertyCase`. So if your constructor looks like this;
+use the `ConstructorExceptionPropertyCase`. So if your constructor looks like this:
 
 ```php
 public function __construct(
@@ -156,19 +156,21 @@ ClassExpectation::create(TransformativeDataClass::class, [
 
 ### Testing with closures
 
-You can use the `ClosurePropertyCase` to do your own validation of getter output by writing a closure return `true` or `false`.
+You can use the `ClosurePropertyCase` to do your own validation of getter output by writing a closure returning a `bool`.
 Example:
 
 ```php
 use \Sytzez\DataObjectTester\PropertyCases\ClosurePropertyCase;
 
-'getCollection' => new ClosurePropertyCase(
-    new ArrayCollection([1, 2, 3]),
-    static fn (Collection $output): bool =>
-        $output->contains(1)
-        && $output->contains(2)
-        && $output->contains(3)
-),
+ClassExpectation::create(AcmeClass::class, [
+    'getCollection' => new ClosurePropertyCase(
+        new ArrayCollection([1, 2, 3]),
+        static fn (Collection $output): bool =>
+            $output->contains(1)
+            && $output->contains(2)
+            && $output->contains(3)
+    ),
+])
 ```
 
 ### Test case generator
