@@ -104,7 +104,7 @@ use the `ConstructorExceptionPropertyCase`. So if your constructor looks like th
 public function __construct(
     private int $number,
 ) {
-    if ($number < 0) {
+    if ($this->number < 0) {
         throw new \InvalidArgumentException('Number cannot be negative');
     }
 }
