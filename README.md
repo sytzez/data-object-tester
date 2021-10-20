@@ -160,7 +160,7 @@ You can use the `ClosurePropertyCase` to do your own validation of getter output
 Example:
 
 ```php
-use \Sytzez\DataObjectTester\PropertyCases\ClosurePropertyCase;
+use Sytzez\DataObjectTester\PropertyCases\ClosurePropertyCase;
 
 ClassExpectation::create(AcmeClass::class, [
     'getCollection' => new ClosurePropertyCase(
