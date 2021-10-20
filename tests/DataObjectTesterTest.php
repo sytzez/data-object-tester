@@ -220,6 +220,10 @@ class DataObjectTesterTest extends MockeryTestCase
         $tester->run();
     }
 
+    /**
+     * @param string $fqn
+     * @param array<string> $methodNames
+     */
     protected function assertAssertMethodsExists(string $fqn, array $methodNames): void
     {
         foreach ($methodNames as $methodName) {
@@ -229,8 +233,12 @@ class DataObjectTesterTest extends MockeryTestCase
         }
     }
 
-    protected function assertAssertGetterReturns(string $fqn, string $getterName, $expectedOutput, $output): void
-    {
+    protected function assertAssertGetterReturns(
+        string $fqn,
+        string $getterName,
+        mixed $expectedOutput,
+        mixed $output,
+    ): void {
         $this->testCaseMock->expects('assertEquals')
             ->withArgs([$expectedOutput, $output, "$fqn::$getterName() returned an unexpected value"])
             ->once();

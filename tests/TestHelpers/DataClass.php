@@ -6,6 +6,11 @@ namespace Sytzez\DataObjectTester\Tests\TestHelpers;
 
 final class DataClass
 {
+    /**
+     * @param string $string
+     * @param int $int
+     * @param array<mixed> $array
+     */
     public function __construct(
         private string $string,
         private int $int,
@@ -23,6 +28,9 @@ final class DataClass
         return $this->int;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getArray(): array
     {
         return $this->array;

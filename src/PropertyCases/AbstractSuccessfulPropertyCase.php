@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 abstract class AbstractSuccessfulPropertyCase extends AbstractPropertyCase
 {
-    protected $expectedOutput;
+    protected mixed $expectedOutput;
 
     /**
      * @return Generator<string>

@@ -28,6 +28,9 @@ final class PropertyExpectation
         return $this->getterName;
     }
 
+    /**
+     * @return array<PropertyCaseContract>
+     */
     public function getCases(): array
     {
         return $this->cases;

@@ -11,6 +11,9 @@ interface PropertyCaseContract
 {
     public function setGetterName(string $getterName): static;
 
+    /**
+     * @return Generator<mixed>
+     */
     public function getConstructorArguments(): Generator;
 
     /**

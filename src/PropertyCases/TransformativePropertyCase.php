@@ -9,12 +9,15 @@ use Generator;
 final class TransformativePropertyCase extends AbstractSuccessfulPropertyCase
 {
     public function __construct(
-        private $input,
-        $expectedOutput,
+        private mixed $input,
+        mixed $expectedOutput,
     ) {
         $this->expectedOutput = $expectedOutput;
     }
 
+    /**
+     * @return Generator<mixed>
+     */
     public function getConstructorArguments(): Generator
     {
         yield $this->input;

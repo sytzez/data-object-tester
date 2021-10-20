@@ -10,11 +10,14 @@ use PHPUnit\Framework\TestCase;
 final class ConstructorExceptionPropertyCase extends AbstractPropertyCase
 {
     public function __construct(
-        private $input,
-        private $message,
+        private mixed $input,
+        private string $message,
     ) {
     }
 
+    /**
+     * @return Generator<mixed>
+     */
     public function getConstructorArguments(): Generator
     {
         yield $this->input;

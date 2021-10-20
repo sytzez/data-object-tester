@@ -9,6 +9,9 @@ use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
 
 final class ClassExpectationBuilder
 {
+    /**
+     * @var array<PropertyExpectation>
+     */
     private array $propertyExpectations = [];
 
     public function __construct(

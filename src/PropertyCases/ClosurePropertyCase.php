@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 class ClosurePropertyCase extends AbstractPropertyCase
 {
     public function __construct(
-        private $input,
+        private mixed $input,
         private Closure $closure
     ) {
     }
@@ -26,6 +26,9 @@ class ClosurePropertyCase extends AbstractPropertyCase
         yield from [];
     }
 
+    /**
+     * @return Generator<mixed>
+     */
     public function getConstructorArguments(): Generator
     {
         yield $this->input;

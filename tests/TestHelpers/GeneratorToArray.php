@@ -12,6 +12,10 @@ final class GeneratorToArray
     {
     }
 
+    /**
+     * @param Generator<mixed> $generator
+     * @return array<mixed>
+     */
     public static function convert(Generator $generator): array {
         $array = [];
 

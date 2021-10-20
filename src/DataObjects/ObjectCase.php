@@ -49,6 +49,9 @@ final class ObjectCase
         }
     }
 
+    /**
+     * @return Generator<mixed>
+     */
     public function getConstructorArguments(): Generator
     {
         foreach ($this->propertyCases as $propertyCase) {
