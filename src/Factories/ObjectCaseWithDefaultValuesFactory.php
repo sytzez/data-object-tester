@@ -36,7 +36,7 @@ final class ObjectCaseWithDefaultValuesFactory
         foreach ($propertyExpectations as $propertyExpectation) {
             $defaultCase = $propertyExpectation->getDefaultCase();
 
-            assert($defaultCase, 'Existence has been validated by the ClassDescription');
+            assert($defaultCase !== null, 'Existence has been validated by the ClassDescription');
 
             $builder->addPropertyCase($defaultCase);
         }
