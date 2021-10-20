@@ -66,6 +66,8 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
 
         foreach ($currentProperty->getCases() as $propertyCase) {
             if ($propertyCase instanceof DefaultPropertyCase) {
+                $this->numOfCases++;
+
                 yield ObjectCaseWithDefaultValuesFactory::create(
                     $this->classExpectation,
                     $existingPropertyCases,
