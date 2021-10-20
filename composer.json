@@ -24,6 +24,7 @@
         }
     },
     "require-dev": {
-        "mockery/mockery": "^1.4"
+        "mockery/mockery": "^1.4",
+        "phpstan/phpstan": "^0.12.99"
     }
 }
