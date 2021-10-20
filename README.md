@@ -70,6 +70,8 @@ class DataClassTest extends DataObjectTestCase
 }
 ```
 
+*(Alternatively to extending the `DataObjectTestCase`, you can `use TestsDataObjects`)*
+
 This will test that all the getters exist, and that they give back the values provided in the constructor.
 
 The array in the class expectation lists the getters, in the same order as their respective constructor arguments.
