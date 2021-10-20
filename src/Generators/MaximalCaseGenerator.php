@@ -28,7 +28,6 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
     /**
      * @param ClassExpectation $classExpectation
      * @return Generator<ObjectCase>
-     * @throws Exception
      */
     public function generate(ClassExpectation $classExpectation): Generator
     {
