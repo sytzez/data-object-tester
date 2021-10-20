@@ -12,6 +12,7 @@ use Sytzez\DataObjectTester\Contracts\PropertyCaseContract;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
+use Sytzez\DataObjectTester\Factories\ObjectCaseWithDefaultValuesFactory;
 use Sytzez\DataObjectTester\PropertyCases\DefaultPropertyCase;
 
 final class MaximalCaseGenerator implements CaseGeneratorStrategy
@@ -66,9 +67,9 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
 
         foreach ($currentProperty->getCases() as $propertyCase) {
             if ($propertyCase instanceof DefaultPropertyCase) {
-                yield $this->createCaseWithRemainingDefaultValues(
-                    [...$existingPropertyCases, $propertyCase],
-                    $remainingProperties
+                yield ObjectCaseWithDefaultValuesFactory::create(
+                    $this->classExpectation,
+                    $existingPropertyCases,
                 );
 
                 continue;
@@ -79,29 +80,5 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
                 $remainingProperties
             );
         }
-    }
-
-    /**
-     * @param array<PropertyCaseContract> $existingPropertyCases
-     * @param array<PropertyExpectation> $propertyExpectations
-     * @return ObjectCase
-     */
-    private function createCaseWithRemainingDefaultValues(array $existingPropertyCases, array $propertyExpectations): ObjectCase
-    {
-        $builder = new ObjectCaseBuilder($this->classExpectation);
-
-        foreach ($existingPropertyCases as $propertyCase) {
-            $builder->addPropertyCase($propertyCase);
-        }
-
-        foreach ($propertyExpectations as $propertyExpectation) {
-            $defaultCase = $propertyExpectation->getDefaultCase();
-
-            assert($defaultCase, 'Has been validated by the ClassDescription');
-
-            $builder->addPropertyCase($defaultCase);
-        }
-
-        return $builder->getResult();
     }
 }
