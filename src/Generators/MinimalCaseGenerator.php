@@ -44,6 +44,8 @@ final class MinimalCaseGenerator implements CaseGeneratorStrategy
                 ? $propertyExpectation->getDefaultCase()
                 : $propertyExpectation->getCases()[$offset % count($propertyExpectation->getCases())];
 
+            assert($propertyCase !== null, 'ClassExpectation ensures a default exists at this point');
+
             $builder->addPropertyCase($propertyCase);
 
             if ($propertyCase instanceof DefaultPropertyCase) {
