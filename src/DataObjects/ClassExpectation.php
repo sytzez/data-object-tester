@@ -9,6 +9,10 @@ use Sytzez\DataObjectTester\Factories\ClassExpectationFactory;
 
 final class ClassExpectation
 {
+    /**
+     * @param string $fqn
+     * @param array<PropertyExpectation> $propertyExpectations
+     */
     public function __construct(
         private string $fqn,
         private array $propertyExpectations,
@@ -16,6 +20,8 @@ final class ClassExpectation
         if (! class_exists($this->fqn)) {
             throw new InvalidArgumentException('Class does not exist');
         }
+
+        $this->validateDefaultProperties();
     }
 
     public function getFqn(): string
@@ -39,5 +45,21 @@ final class ClassExpectation
     public static function create(string $fqn, array $expectation): self
     {
         return ClassExpectationFactory::create($fqn, $expectation);
+    }
+
+    protected function validateDefaultProperties(): void
+    {
+        $hasSeenDefault = false;
+
+        foreach($this->propertyExpectations as $propertyExpectation) {
+            if ($propertyExpectation->getDefaultCase()) {
+                $hasSeenDefault = true;
+            } else if ($hasSeenDefault) {
+                throw new InvalidArgumentException(
+                    $this->fqn . '::' . $propertyExpectation->getGetterName() . '() '
+                    . 'has no default case'
+                );
+            }
+        }
     }
 }
