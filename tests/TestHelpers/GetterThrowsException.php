@@ -10,6 +10,7 @@ final class GetterThrowsException
 {
     public const MESSAGE = 'This is the message';
 
+    /** @phpstan-ignore-next-line */
     public function __construct(
         int $number,
     ) {
