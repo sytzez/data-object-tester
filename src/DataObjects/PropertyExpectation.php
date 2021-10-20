@@ -6,6 +6,7 @@ namespace Sytzez\DataObjectTester\DataObjects;
 
 use Sytzez\DataObjectTester\Contracts\PropertyCaseContract;
 use Sytzez\DataObjectTester\Factories\PropertyExpectationFactory;
+use Sytzez\DataObjectTester\PropertyCases\DefaultPropertyCase;
 
 final class PropertyExpectation
 {
@@ -30,6 +31,17 @@ final class PropertyExpectation
     public function getCases(): array
     {
         return $this->cases;
+    }
+
+    public function getDefaultCase(): ?DefaultPropertyCase
+    {
+        foreach ($this->cases as $case) {
+            if ($case instanceof DefaultPropertyCase) {
+                return $case;
+            }
+        }
+
+        return null;
     }
 
     /**
