@@ -10,6 +10,7 @@ use Sytzez\DataObjectTester\Contracts\Generators\CaseGeneratorStrategy;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
+use Sytzez\DataObjectTester\PropertyCases\DefaultPropertyCase;
 
 final class MinimalCaseGenerator implements CaseGeneratorStrategy
 {
@@ -36,10 +37,18 @@ final class MinimalCaseGenerator implements CaseGeneratorStrategy
     {
         $builder = new ObjectCaseBuilder($this->classExpectation);
 
+        $hasSeenDefault = false;
+
         foreach ($this->classExpectation->getPropertyExpectations() as $propertyExpectation) {
-            $builder->addPropertyCase(
-                $propertyExpectation->getCases()[$offset % count($propertyExpectation->getCases())]
-            );
+            $propertyCase = $hasSeenDefault
+                ? $propertyExpectation->getDefaultCase()
+                : $propertyExpectation->getCases()[$offset % count($propertyExpectation->getCases())];
+
+            $builder->addPropertyCase($propertyCase);
+
+            if ($propertyCase instanceof DefaultPropertyCase) {
+                $hasSeenDefault = true;
+            }
         }
 
         return $builder->getResult();
