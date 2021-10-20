@@ -17,7 +17,7 @@ final class ClassExpectationFactory
 
     /**
      * @param string $fqn
-     * @param array<string, array<mixed> $expectation
+     * @param array<string, array<mixed>> $expectation
      * @return ClassExpectation
      */
     public static function create(string $fqn, array $expectation): ClassExpectation
