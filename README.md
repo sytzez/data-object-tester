@@ -203,8 +203,17 @@ You can also provide your own case generators by implementing the [CaseGenerator
 
 If there is a case not (yet) covered by the package, you can of course still add your own `@test` methods to the test case.
 
+## Code Quality
+
+### Unit tests
+
+The project aims to have a coverage of 100% (87% of lines at the moment)
+
+### PHPStan
+
+PHPstan reports 0 errors on the maximum level 8.
+
 ## TODO
 
-- Handling optional arguments (needs work: in case generators)
 - Unit test every class
 - Setup github actions
