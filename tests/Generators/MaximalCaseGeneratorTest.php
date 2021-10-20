@@ -35,22 +35,36 @@ class MaximalCaseGeneratorTest extends CaseGeneratorTestCase
     public function it_creates_all_possible_combinations_of_properties(): void
     {
         $classExpectation = ClassExpectation::create(DataClass::class, [
-            'getString' => ['a', 'b', 'c'],
+            'getString' => ['a', 'b'],
             'getInt'    => [1, -1],
-            'getArray'  => [[]],
         ]);
 
         $generator = new MaximalCaseGenerator();
 
         $cases = GeneratorToArray::convert($generator->generate($classExpectation));
 
-        static::assertCount(3 * 2 * 1, $cases);
+        static::assertCount(2 * 2, $cases);
 
         static::assertContainsObjectCase(
             ObjectCase::create($classExpectation, [
                 'getString' => 'a',
                 'getInt'    => 1,
-                'getArray'  => [],
+            ]),
+            $cases
+        );
+
+        static::assertContainsObjectCase(
+            ObjectCase::create($classExpectation, [
+                'getString' => 'a',
+                'getInt'    => -1,
+            ]),
+            $cases
+        );
+
+        static::assertContainsObjectCase(
+            ObjectCase::create($classExpectation, [
+                'getString' => 'b',
+                'getInt'    => 1,
             ]),
             $cases
         );
@@ -59,16 +73,6 @@ class MaximalCaseGeneratorTest extends CaseGeneratorTestCase
             ObjectCase::create($classExpectation, [
                 'getString' => 'b',
                 'getInt'    => -1,
-                'getArray'  => [],
-            ]),
-            $cases
-        );
-
-        static::assertContainsObjectCase(
-            ObjectCase::create($classExpectation, [
-                'getString' => 'c',
-                'getInt'    => 1,
-                'getArray'  => [],
             ]),
             $cases
         );
