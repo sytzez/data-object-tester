@@ -10,6 +10,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Sytzez\DataObjectTester\Contracts\PropertyCaseContract;
 use Sytzez\DataObjectTester\Factories\ObjectCaseFactory;
+use Sytzez\DataObjectTester\PropertyCases\DefaultPropertyCase;
 
 final class ObjectCase
 {
@@ -22,6 +23,7 @@ final class ObjectCase
         private array $propertyCases,
     ) {
         $this->validateCompleteness();
+        $this->validateDefaultProperties();
     }
 
     public function getClassExpectation(): ClassExpectation
@@ -54,6 +56,16 @@ final class ObjectCase
         }
     }
 
+    /**
+     * @param ClassExpectation $classExpectation
+     * @param array<string, mixed> $values
+     * @return ObjectCase
+     */
+    public static function create(ClassExpectation $classExpectation, array $values): ObjectCase
+    {
+        return ObjectCaseFactory::create($classExpectation, $values);
+    }
+
     private function validateCompleteness(): void
     {
         if (count($this->propertyCases) !== count($this->classExpectation->getPropertyExpectations())) {
@@ -65,13 +77,16 @@ final class ObjectCase
         }
     }
 
-    /**
-     * @param ClassExpectation $classExpectation
-     * @param array<string, mixed> $values
-     * @return ObjectCase
-     */
-    public static function create(ClassExpectation $classExpectation, array $values): ObjectCase
+    protected function validateDefaultProperties(): void
     {
-        return ObjectCaseFactory::create($classExpectation, $values);
+        $hasSeenDefault = false;
+
+        foreach($this->propertyCases as $propertyCase) {
+            if ($propertyCase instanceof DefaultPropertyCase) {
+                $hasSeenDefault = true;
+            } else if ($hasSeenDefault) {
+                throw new InvalidArgumentException('All property cases after a default property case must also be default');
+            }
+        }
     }
 }
