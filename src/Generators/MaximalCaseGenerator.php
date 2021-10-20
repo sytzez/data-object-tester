@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\Generators;
 
+use DomainException;
 use Generator;
+use Sytzez\DataObjectTester\Builders\ObjectCaseBuilder;
 use Sytzez\DataObjectTester\Contracts\Generators\CaseGeneratorStrategy;
 use Sytzez\DataObjectTester\Contracts\PropertyCaseContract;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
+use Sytzez\DataObjectTester\PropertyCases\DefaultPropertyCase;
 
 final class MaximalCaseGenerator implements CaseGeneratorStrategy
 {
@@ -24,6 +27,7 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
     /**
      * @param ClassExpectation $classExpectation
      * @return Generator<ObjectCase>
+     * @throws Exception
      */
     public function generate(ClassExpectation $classExpectation): Generator
     {
@@ -61,10 +65,43 @@ final class MaximalCaseGenerator implements CaseGeneratorStrategy
         $remainingProperties = array_slice($propertyExpectations, 1);
 
         foreach ($currentProperty->getCases() as $propertyCase) {
+            if ($propertyCase instanceof DefaultPropertyCase) {
+                yield $this->createCaseWithRemainingDefaultValues(
+                    [...$existingPropertyCases, $propertyCase],
+                    $remainingProperties
+                );
+
+                continue;
+            }
+
             yield from $this->generatePossibilities(
                 [...$existingPropertyCases, $propertyCase],
                 $remainingProperties
             );
         }
+    }
+
+    /**
+     * @param array<PropertyCaseContract> $existingPropertyCases
+     * @param array<PropertyExpectation> $propertyExpectations
+     * @return ObjectCase
+     */
+    private function createCaseWithRemainingDefaultValues(array $existingPropertyCases, array $propertyExpectations): ObjectCase
+    {
+        $builder = new ObjectCaseBuilder($this->classExpectation);
+
+        foreach ($existingPropertyCases as $propertyCase) {
+            $builder->addPropertyCase($propertyCase);
+        }
+
+        foreach ($propertyExpectations as $propertyExpectation) {
+            $defaultCase = $propertyExpectation->getDefaultCase();
+
+            assert($defaultCase, 'Has been validated by the ClassDescription');
+
+            $builder->addPropertyCase($defaultCase);
+        }
+
+        return $builder->getResult();
     }
 }
