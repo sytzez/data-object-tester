@@ -21,8 +21,10 @@ use Sytzez\DataObjectTester\Tests\TestHelpers\GetterThrowsException;
 
 class DataObjectTesterTest extends MockeryTestCase
 {
+    /** @var Mockery\MockInterface&TestCase  */
     protected Mockery\MockInterface|TestCase $testCaseMock;
 
+    /** @var CaseGeneratorStrategy&Mockery\MockInterface  */
     protected CaseGeneratorStrategy|Mockery\MockInterface $caseGeneratorMock;
 
     protected function setUp(): void
