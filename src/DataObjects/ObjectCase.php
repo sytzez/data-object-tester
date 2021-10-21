@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\DataObjects;
 
-use Exception;
 use Generator;
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 use Sytzez\DataObjectTester\Contracts\PropertyCaseContract;
 use Sytzez\DataObjectTester\Factories\ObjectCaseFactory;
 use Sytzez\DataObjectTester\PropertyCases\DefaultPropertyCase;
