@@ -209,7 +209,7 @@ If there is a case not (yet) covered by the package, you can of course still add
 
 ### Unit tests
 
-The project aims to have a coverage of 100% (87% of lines at the moment)
+The project aims to have a coverage of 100% (92% of lines at the moment)
 
 ### PHPStan
 
