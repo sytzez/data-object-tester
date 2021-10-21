@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sytzez\DataObjectTester\DataObjects;
 
+use InvalidArgumentException;
 use Sytzez\DataObjectTester\Contracts\PropertyCaseContract;
 use Sytzez\DataObjectTester\Factories\PropertyExpectationFactory;
 use Sytzez\DataObjectTester\PropertyCases\DefaultPropertyCase;
@@ -18,6 +19,10 @@ final class PropertyExpectation
         private string $getterName,
         private array $cases,
     ) {
+        if (empty($cases)) {
+            throw new InvalidArgumentException('PropertyExpectation must contain at least one PropertyCase');
+        }
+
         foreach ($this->cases as $case) {
             $case->setGetterName($this->getterName);
         }
