@@ -11,12 +11,8 @@ use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\PropertyCases\SimplePropertyCase;
 
-final class ObjectCaseFactory
+final class ObjectCaseFactory extends AbstractFactory
 {
-    private function __construct()
-    {
-    }
-
     /**
      * @param ClassExpectation $classExpectation
      * @param array<string, mixed> $values

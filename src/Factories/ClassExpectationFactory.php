@@ -9,12 +9,8 @@ use Sytzez\DataObjectTester\Builders\ClassExpectationBuilder;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
 
-final class ClassExpectationFactory
+final class ClassExpectationFactory extends AbstractFactory
 {
-    private function __construct()
-    {
-    }
-
     /**
      * @param string $fqn
      * @param array<string, array<mixed>> $expectation

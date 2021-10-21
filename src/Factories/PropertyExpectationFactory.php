@@ -9,12 +9,8 @@ use Sytzez\DataObjectTester\Contracts\PropertyCaseContract;
 use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
 use Sytzez\DataObjectTester\PropertyCases\SimplePropertyCase;
 
-final class PropertyExpectationFactory
+final class PropertyExpectationFactory extends AbstractFactory
 {
-    private function __construct()
-    {
-    }
-
     /**
      * @param string $getterName
      * @param array<mixed> $values
