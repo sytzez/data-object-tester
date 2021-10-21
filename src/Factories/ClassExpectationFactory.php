@@ -33,7 +33,7 @@ final class ClassExpectationFactory
 
             if (! is_array($values)) {
                 throw new InvalidArgumentException(
-                    sprintf("Getter values for '$getterName'' must be an array, %s given", gettype($values)),
+                    sprintf("Getter values for '$getterName' must be an array, %s given", gettype($values)),
                 );
             }
 
