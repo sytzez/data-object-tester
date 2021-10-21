@@ -19,7 +19,6 @@ class ClassExpectationBuilderTest extends TestCase
         $result = (new ClassExpectationBuilder(EmptyClass::class))
             ->getResult();
 
-        static::assertInstanceOf(ClassExpectation::class, $result);
         static::assertEquals(EmptyClass::class, $result->getFqn());
         static::assertEmpty($result->getPropertyExpectations());
     }
@@ -32,7 +31,7 @@ class ClassExpectationBuilderTest extends TestCase
         $properties = [
             PropertyExpectationFactory::create('getString', ['a', 'b']),
             PropertyExpectationFactory::create('getInt', [1, 2, 3]),
-            PropertyExpectationFactory::create('getArray', []),
+            PropertyExpectationFactory::create('getArray', [[]]),
         ];
 
         $result = (new ClassExpectationBuilder(DataClass::class))
@@ -41,7 +40,6 @@ class ClassExpectationBuilderTest extends TestCase
             ->addPropertyExpectation($properties[2])
             ->getResult();
 
-        static::assertInstanceOf(ClassExpectation::class, $result);
         static::assertEquals(DataClass::class, $result->getFqn());
         static::assertCount(3, $result->getPropertyExpectations());
         static::assertEquals($properties[0], $result->getPropertyExpectations()[0]);
