@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 abstract class AbstractSuccessfulPropertyCase extends AbstractPropertyCase
 {
-    protected mixed $expectedOutput;
+    abstract protected function getExpectedOutput(): mixed;
 
     /**
      * @return Generator<string>
@@ -40,7 +40,7 @@ abstract class AbstractSuccessfulPropertyCase extends AbstractPropertyCase
         }
 
         $testCase::assertEquals(
-            $this->expectedOutput,
+            $this->getExpectedOutput(),
             $output,
             "$fqn::$this->getterName() returned an unexpected value",
         );

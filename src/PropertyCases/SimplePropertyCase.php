@@ -11,7 +11,6 @@ final class SimplePropertyCase extends AbstractSuccessfulPropertyCase
     public function __construct(
         private mixed $value,
     ) {
-        $this->expectedOutput = $value;
     }
 
     /**
@@ -20,5 +19,10 @@ final class SimplePropertyCase extends AbstractSuccessfulPropertyCase
     public function getConstructorArguments(): Generator
     {
         yield $this->value;
+    }
+
+    protected function getExpectedOutput(): mixed
+    {
+        return $this->value;
     }
 }

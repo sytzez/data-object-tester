@@ -9,9 +9,8 @@ use Generator;
 final class DefaultPropertyCase extends AbstractSuccessfulPropertyCase
 {
     public function __construct(
-        mixed $expectedOutput,
+        private mixed $expectedOutput,
     ) {
-        $this->expectedOutput = $expectedOutput;
     }
 
     /**
@@ -20,5 +19,10 @@ final class DefaultPropertyCase extends AbstractSuccessfulPropertyCase
     public function getConstructorArguments(): Generator
     {
         yield from [];
+    }
+
+    protected function getExpectedOutput(): mixed
+    {
+        return $this->expectedOutput;
     }
 }

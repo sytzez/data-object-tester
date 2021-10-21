@@ -10,9 +10,8 @@ final class TransformativePropertyCase extends AbstractSuccessfulPropertyCase
 {
     public function __construct(
         private mixed $input,
-        mixed $expectedOutput,
+        private mixed $expectedOutput,
     ) {
-        $this->expectedOutput = $expectedOutput;
     }
 
     /**
@@ -21,5 +20,10 @@ final class TransformativePropertyCase extends AbstractSuccessfulPropertyCase
     public function getConstructorArguments(): Generator
     {
         yield $this->input;
+    }
+
+    protected function getExpectedOutput(): mixed
+    {
+        return $this->expectedOutput;
     }
 }
