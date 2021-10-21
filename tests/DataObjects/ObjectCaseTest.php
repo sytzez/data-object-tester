@@ -5,6 +5,7 @@ namespace Sytzez\DataObjectTester\Tests\DataObjects;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\DataObjectTestCase;
+use Sytzez\DataObjectTester\PropertyCases\ConstructorExceptionPropertyCase;
 use Sytzez\DataObjectTester\PropertyCases\DefaultPropertyCase;
 use Sytzez\DataObjectTester\PropertyCases\SimplePropertyCase;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
@@ -25,6 +26,8 @@ class ObjectCaseTest extends DataObjectTestCase
         static::assertEquals($expectation, $objectCase->getClassExpectation());
         static::assertEquals([], $objectCase->getPropertyCases());
         static::assertEquals(0, iterator_count($objectCase->getConstructorArguments()));
+        static::assertEmpty(GeneratorToArray::convert($objectCase->getConstructorArguments()));
+        static::assertEmpty(GeneratorToArray::convert($objectCase->getConstructorExceptions()));
     }
 
     /**
@@ -52,6 +55,7 @@ class ObjectCaseTest extends DataObjectTestCase
         static::assertEquals($expectation, $objectCase->getClassExpectation());
         static::assertEquals($propertyCases, $objectCase->getPropertyCases());
         static::assertEquals(['a', 1, []], GeneratorToArray::convert($objectCase->getConstructorArguments()));
+        static::assertEmpty(GeneratorToArray::convert($objectCase->getConstructorExceptions()));
     }
 
     /**
@@ -127,5 +131,34 @@ class ObjectCaseTest extends DataObjectTestCase
         static::expectExceptionMessage('All property cases after a default property case must also be default');
 
         new ObjectCase($expectation, $propertyCases);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_the_expected_constructor_exceptions(): void
+    {
+        $expectation = ClassExpectation::create(DataClass::class, [
+            'getString' => ['a', 'b', 'c'],
+            'getInt'    => [1, 2, 3],
+            'getArray'  => [[]],
+        ]);
+
+        $propertyCases = [
+            (new ConstructorExceptionPropertyCase('a', 'Something is wrong'))
+                ->setGetterName('getString'),
+            (new ConstructorExceptionPropertyCase(1, 'Something else is wrong'))
+                ->setGetterName('getInt'),
+            (new ConstructorExceptionPropertyCase([], 'Error!'))
+                ->setGetterName('getArray'),
+        ];
+
+        $objectCase = new ObjectCase($expectation, $propertyCases);
+
+        static::assertEquals(['a', 1, []], GeneratorToArray::convert($objectCase->getConstructorArguments()));
+        static::assertEquals(
+            ['Something is wrong', 'Something else is wrong', 'Error!'],
+            GeneratorToArray::convert($objectCase->getConstructorExceptions())
+        );
     }
 }
