@@ -3,9 +3,7 @@
 namespace Sytzez\DataObjectTester\Tests\DataObjects;
 
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
-use Sytzez\DataObjectTester\DataObjects\InputOutputExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
-use Sytzez\DataObjectTester\DataObjects\PropertyCase;
 use Sytzez\DataObjectTester\DataObjectTestCase;
 use Sytzez\DataObjectTester\PropertyCases\SimplePropertyCase;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
@@ -39,8 +37,6 @@ class ObjectCaseTest extends DataObjectTestCase
             'getArray'  => [[]],
         ]);
 
-        $properties = $expectation->getPropertyExpectations();
-
         $propertyCases = [
             (new SimplePropertyCase('a'))
                 ->setGetterName('getString'),
@@ -68,8 +64,6 @@ class ObjectCaseTest extends DataObjectTestCase
             'getArray'  => [[]],
         ]);
 
-        $properties = $expectation->getPropertyExpectations();
-
         $propertyCases = [
             (new SimplePropertyCase('a'))
                 ->setGetterName('getString'),
@@ -92,8 +86,6 @@ class ObjectCaseTest extends DataObjectTestCase
             'getInt'    => [1, 2, 3],
             'getArray'  => [[]],
         ]);
-
-        $properties = $expectation->getPropertyExpectations();
 
         $propertyCases = [
             (new SimplePropertyCase('a'))
