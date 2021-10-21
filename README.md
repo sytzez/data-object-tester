@@ -215,6 +215,10 @@ The project aims to have a coverage of 100% (92% of lines at the moment)
 
 PHPstan reports 0 errors on the maximum level 8.
 
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE) for more information.
+
 ## TODO
 
 - Unit test every class
