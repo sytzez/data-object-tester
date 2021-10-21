@@ -5,6 +5,7 @@ namespace Sytzez\DataObjectTester\Tests\DataObjects;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\DataObjectTestCase;
+use Sytzez\DataObjectTester\PropertyCases\DefaultPropertyCase;
 use Sytzez\DataObjectTester\PropertyCases\SimplePropertyCase;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
 use Sytzez\DataObjectTester\Tests\TestHelpers\EmptyClass;
@@ -99,6 +100,31 @@ class ObjectCaseTest extends DataObjectTestCase
         ];
 
         static::expectExceptionMessage('Number of property cases on object case (4) does not equal number of properties on class expectation (3)');
+
+        new ObjectCase($expectation, $propertyCases);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_error_if_not_every_case_after_a_default_case_is_default(): void
+    {
+        $expectation = ClassExpectation::create(DataClass::class, [
+            'getString' => ['a', 'b', 'c'],
+            'getInt'    => [1, 2, 3, new DefaultPropertyCase(0)],
+            'getArray'  => [[1, 2, 3], new DefaultPropertyCase([])],
+        ]);
+
+        $propertyCases = [
+            (new SimplePropertyCase('a'))
+                ->setGetterName('getString'),
+            (new DefaultPropertyCase(0))
+                ->setGetterName('getInt'),
+            (new SimplePropertyCase([]))
+                ->setGetterName('getArray'),
+        ];
+
+        static::expectExceptionMessage('All property cases after a default property case must also be default');
 
         new ObjectCase($expectation, $propertyCases);
     }
