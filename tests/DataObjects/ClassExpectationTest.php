@@ -8,6 +8,8 @@ use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\PropertyExpectation;
 use Sytzez\DataObjectTester\DataObjectTestCase;
 use Sytzez\DataObjectTester\Generators\MaximalCaseGenerator;
+use Sytzez\DataObjectTester\PropertyCases\ConstructorExceptionPropertyCase;
+use Sytzez\DataObjectTester\PropertyCases\DefaultPropertyCase;
 use Sytzez\DataObjectTester\Tests\TestHelpers\ConstructorThrowsException;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
 use Sytzez\DataObjectTester\Tests\TestHelpers\TransformativeDataClass;
@@ -24,13 +26,17 @@ class ClassExpectationTest extends DataObjectTestCase
                 'getFqn'                  => [
                     DataClass::class,
                     TransformativeDataClass::class,
-                    ConstructorThrowsException::class
+                    ConstructorThrowsException::class,
+                    new ConstructorExceptionPropertyCase(
+                        'SantaClass',
+                        'Class does not exist'
+                    ),
                 ],
                 'getPropertyExpectations' => [
                     [],
                     [
                         PropertyExpectation::create('getterA', ['a', 'b', 'c']),
-                        PropertyExpectation::create('getterB', [1, 2, 3]),
+                        PropertyExpectation::create('getterB', [1, 2, new DefaultPropertyCase(0)]),
                     ]
                 ]
             ]),
@@ -41,10 +47,20 @@ class ClassExpectationTest extends DataObjectTestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_the_class_does_not_exist(): void
+    public function it_checks_if_all_properties_have_a_default_after_the_first_default(): void
     {
-        static::expectExceptionMessage('Class does not exist');
+        static::expectExceptionMessage(DataClass::class . '::getArray() has no default case');
 
-        new ClassExpectation('does not exist', []);
+        new ClassExpectation(
+            DataClass::class,
+            [
+                PropertyExpectation::create('getInt', [1, 2, 3]),
+                PropertyExpectation::create('getString', [
+                    'a',
+                    new DefaultPropertyCase(''),
+                ]),
+                PropertyExpectation::create('getArray', [[], [1, 2, 3]]),
+            ]
+        );
     }
 }
