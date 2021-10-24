@@ -9,6 +9,7 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Sytzez\DataObjectTester\Contracts\Generators\CaseGeneratorStrategy;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
+use Sytzez\DataObjectTester\DataObjects\InstantiateObjectResult;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\Generators\MinimalCaseGenerator;
 
@@ -57,19 +58,20 @@ final class DataObjectTester
 
     private function testObjectCase(ObjectCase $objectCase): void
     {
-        $object = $this->instantiateObject($objectCase);
+        $instantiateObjectResult = $this->instantiateObject($objectCase);
 
-        // Expected exception was caught
-        if ($object === false) {
+        if ($instantiateObjectResult->exceptionWasCaught()) {
             return;
         }
+
+        $object = $instantiateObjectResult->getObject();
 
         foreach ($objectCase->getPropertyCases() as $propertyCase) {
             $propertyCase->makeAssertion($this->testCase, $object);
         }
     }
 
-    private function instantiateObject(ObjectCase $objectCase): object | false
+    private function instantiateObject(ObjectCase $objectCase): InstantiateObjectResult
     {
         $fqn = $this->dataClassExpectation->getFqn();
 
@@ -84,7 +86,7 @@ final class DataObjectTester
 
             foreach($expectedExceptionMessages as $expectedExceptionMessage) {
                 if ($message === $expectedExceptionMessage) {
-                    return false;
+                    return new InstantiateObjectResult(null, true);
                 }
             }
 
@@ -95,6 +97,6 @@ final class DataObjectTester
             $this->testCase::fail("No exception thrown in $fqn::__construct(), expected exception with message '$expectedExceptionMessage'");
         }
 
-        return $object;
+        return new InstantiateObjectResult($object);
     }
 }
