@@ -27,12 +27,10 @@ abstract class AbstractSuccessfulPropertyCase extends AbstractPropertyCase
 
         try {
             $output = $object->{$this->getterName}();
-        } catch (Exception $e) {
+        } catch (Exception | Error $e) {
+            $class = $e::class;
             $message = $e->getMessage();
-            $testCase::fail("Exception caught while calling $fqn::$this->getterName(): '$message'");
-        } catch (Error $e) {
-            $message = $e->getMessage();
-            $testCase::fail("Error caught while calling $fqn::$this->getterName(): '$message'");
+            $testCase::fail("$class caught while calling $fqn::$this->getterName(): '$message'");
         }
 
         if ($output instanceof Generator) {
