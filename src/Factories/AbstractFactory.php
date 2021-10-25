@@ -6,7 +6,9 @@ namespace Sytzez\DataObjectTester\Factories;
 
 abstract class AbstractFactory
 {
-    // @codeCoverageIgnore
+    /**
+     * @codeCoverageIgnore
+     */
     private function __construct()
     {
     }
