@@ -12,10 +12,12 @@ use Sytzez\DataObjectTester\Contracts\Generators\CaseGeneratorStrategy;
 use Sytzez\DataObjectTester\DataObjects\ClassExpectation;
 use Sytzez\DataObjectTester\DataObjects\ObjectCase;
 use Sytzez\DataObjectTester\DataObjectTester;
+use Sytzez\DataObjectTester\PropertyCases\ConstructorExceptionPropertyCase;
 use Sytzez\DataObjectTester\PropertyCases\TransformativePropertyCase;
 use Sytzez\DataObjectTester\Tests\TestHelpers\ConstructorThrowsError;
 use Sytzez\DataObjectTester\Tests\TestHelpers\ConstructorThrowsException;
 use Sytzez\DataObjectTester\Tests\TestHelpers\DataClass;
+use Sytzez\DataObjectTester\Tests\TestHelpers\EmptyClass;
 use Sytzez\DataObjectTester\Tests\TestHelpers\GetterThrowsError;
 use Sytzez\DataObjectTester\Tests\TestHelpers\GetterThrowsException;
 
@@ -203,6 +205,42 @@ class DataObjectTesterTest extends MockeryTestCase
 
         $this->testCaseMock->expects('fail')
             ->withArgs(["Error caught while calling $fqn::getNumber(): '" . GetterThrowsError::MESSAGE . "'"])
+            ->once()
+            ->andThrow(new AssertionFailedError());
+
+        static::expectException(AssertionFailedError::class);
+
+        $this->test($expectation);
+    }
+
+    /**
+     * @test
+     */
+    public function it_fails_if_an_expected_constructor_exception_was_not_thrown(): void
+    {
+        $fqn = DataClass::class;
+
+        $expectation = ClassExpectation::create($fqn, [
+            'getString' => [new ConstructorExceptionPropertyCase('a', 'Expected exception')],
+            'getInt'    => [1],
+            'getArray'  => [[]],
+        ]);
+
+        $this->assertAssertMethodsExists($fqn, ['getString', 'getInt', 'getArray']);
+
+        $this->caseGeneratorMock->expects('generate')
+            ->withArgs([$expectation])
+            ->once()
+            ->andYield(
+                ObjectCase::create($expectation, [
+                    'getString' => new ConstructorExceptionPropertyCase('a', 'Expected exception'),
+                    'getInt'    => 1,
+                    'getArray'  => [],
+                ]),
+            );
+
+        $this->testCaseMock->expects('fail')
+            ->withArgs(["No exception thrown in $fqn::__construct(), expected exception with message 'Expected exception'"])
             ->once()
             ->andThrow(new AssertionFailedError());
 
