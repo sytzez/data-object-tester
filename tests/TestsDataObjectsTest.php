@@ -32,4 +32,29 @@ class TestsDataObjectsTest extends TestCase
 
         static::assertEquals($expectedAssertCount, static::getCount());
     }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_if_the_class_does_not_extend_test_case(): void
+    {
+        $test = new class {
+            use TestsDataObjects;
+
+            public function run(): void
+            {
+                $this->testDataObjects(
+                    ClassExpectation::create(DataClass::class, [
+                        'getString' => ['a', 'b', 'c'],
+                        'getInt'    => [1, 2, 3],
+                        'getArray'  => [[], [1, 2, 3]],
+                    ]),
+                );
+            }
+        };
+
+        static::expectExceptionMessage('This trait must be used on an instance of ' . TestCase::class);
+
+        $test->run();
+    }
 }
