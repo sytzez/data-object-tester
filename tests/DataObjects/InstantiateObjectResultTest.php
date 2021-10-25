@@ -23,6 +23,7 @@ class InstantiateObjectResultTest extends DataObjectTestCase
                     null,
                     new EmptyClass(),
                     new DataClass('a', 1, []),
+                    new DefaultPropertyCase(null),
                 ],
                 'exceptionWasCaught' => [
                     true,

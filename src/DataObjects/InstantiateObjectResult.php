@@ -7,7 +7,7 @@ namespace Sytzez\DataObjectTester\DataObjects;
 final class InstantiateObjectResult
 {
     public function __construct(
-        private ?object $object,
+        private ?object $object = null,
         private bool $exceptionWasCaught = false,
     ) {
     }

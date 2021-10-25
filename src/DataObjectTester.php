@@ -86,7 +86,7 @@ final class DataObjectTester
 
             foreach($expectedExceptionMessages as $expectedExceptionMessage) {
                 if ($message === $expectedExceptionMessage) {
-                    return new InstantiateObjectResult(null, exceptionWasCaught: true);
+                    return new InstantiateObjectResult(exceptionWasCaught: true);
                 }
             }
 
