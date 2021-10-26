@@ -16,7 +16,9 @@ Check out the code below to see how it works.
 
 ## Installation
 
-`composer require sytzez/data-object-tester --dev`
+```bash
+composer require sytzez/data-object-tester --dev
+````
 
 ## Usage
 
