@@ -33,10 +33,6 @@ abstract class AbstractSuccessfulPropertyCase extends AbstractPropertyCase
             $testCase::fail("$class caught while calling $fqn::$this->getterName(): '$message'");
         }
 
-        if ($output instanceof Generator) {
-            $output = iterator_to_array($output);
-        }
-
         $testCase::assertEquals(
             $this->getExpectedOutput(),
             $output,
