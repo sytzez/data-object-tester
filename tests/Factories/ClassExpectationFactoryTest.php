@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sytzez\DataObjectTester\Tests\Factories;
 
 use Sytzez\DataObjectTester\Factories\ClassExpectationFactory;
