@@ -16,6 +16,7 @@ class ClassExpectationFactoryTest extends TestCase
     {
         static::expectExceptionMessage('Getter name must be a string, integer given');
 
+        /** @phpstan-ignore-next-line  */
         ClassExpectationFactory::create(DataClass::class, [
             1 => ['value'],
         ]);
@@ -28,6 +29,7 @@ class ClassExpectationFactoryTest extends TestCase
     {
         static::expectExceptionMessage("Getter values for 'getString' must be an array, string given");
 
+        /** @phpstan-ignore-next-line  */
         ClassExpectationFactory::create(DataClass::class, [
             'getString' => 'value',
         ]);

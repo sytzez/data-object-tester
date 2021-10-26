@@ -25,6 +25,7 @@ class ObjectCaseFactoryTest extends TestCase
 
         static::expectExceptionMessage('Getter name must be a string, integer given');
 
+        /** @phpstan-ignore-next-line  */
         ObjectCaseFactory::create($classExpectation, [
             1 => 'a',
         ]);
