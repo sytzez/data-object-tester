@@ -66,6 +66,8 @@ final class DataObjectTester
 
         $object = $instantiateObjectResult->getObject();
 
+        assert($object !== null, 'Object has been successfully instantiated');
+
         foreach ($objectCase->getPropertyCases() as $propertyCase) {
             $propertyCase->makeAssertion($this->testCase, $object);
         }
