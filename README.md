@@ -70,7 +70,7 @@ class DataClassTest extends DataObjectTestCase
 }
 ```
 
-*(Alternatively to extending the `DataObjectTestCase`, you can `use TestsDataObjects`)*
+*(Alternatively to extending the `DataObjectTestCase`, you could also `use TestsDataObjects`)*
 
 This will test that all the getters exist, and that they give back the values provided in the constructor.
 
@@ -209,7 +209,7 @@ If there is a case not (yet) covered by the package, you can of course still add
 
 ### Unit tests
 
-The project aims to have a coverage of 100% (92% of lines at the moment)
+The project has a testing coverage of 100% of lines.
 
 ### PHPStan
 
@@ -221,5 +221,4 @@ The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
 ## TODO
 
-- Unit test every class
 - Setup github actions
