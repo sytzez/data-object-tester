@@ -1,3 +1,6 @@
+![PHPUnit](https://github.com/sytzez/data-object-tester/actions/workflows/phpunit.yml/badge.svg)
+![PHPStan](https://github.com/sytzez/data-object-tester/actions/workflows/phpstan.yml/badge.svg)
+
 # Data Object Tester
 
 Should you even unit test your data object classes? 
@@ -209,7 +212,7 @@ If there is a case not (yet) covered by the package, you can of course still add
 
 ### Unit tests
 
-The project has a testing coverage of 100% of lines.
+The project has a testing coverage of 100% of lines using PHPUnit.
 
 ### PHPStan
 
@@ -219,6 +222,3 @@ PHPstan reports 0 errors on the maximum level 8.
 
 The MIT License (MIT). Please see [License File](LICENSE) for more information.
 
-## TODO
-
-- Setup github actions
